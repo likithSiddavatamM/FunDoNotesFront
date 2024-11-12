@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import './FunDoNotesSignUp.css'
+import './FunDoNotesSignIn.css'
 import Button from '@mui/material/Button';
 
 function App() {
@@ -37,3 +38,29 @@ export function SignUp() {
     </div>
   );
 }
+
+
+export function Signin(){
+  return (
+    <div className="signin-container">
+      <div className="signin-form-box">
+        <h1 className="signin-logo">Fundo</h1>
+        <h2>Sign in</h2>
+        <p>Use your Fundo Account</p>
+
+        <form>
+          <input type="text" className="signin-input-field" placeholder="Email or phone*" required />
+          <input type="password" className="signin-input-field" placeholder="Password*" required />
+
+          <div className="signin-links">
+            <a href="#">Forgot password</a>
+            <a href="#">Create account</a>
+          </div>
+
+          <button type="submit" className="signin-submit-button">Login</button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
