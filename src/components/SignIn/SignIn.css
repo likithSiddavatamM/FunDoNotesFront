@@ -1,18 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: rgba(99, 99, 99, 0.228);
-}
-
 .signin-container {
     display: flex;
     justify-content: center;
@@ -52,6 +37,7 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    box-sizing: border-box
 }
 
 .signin-links {
