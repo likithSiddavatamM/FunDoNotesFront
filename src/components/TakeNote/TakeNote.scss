@@ -1,0 +1,25 @@
+.note-card {
+    transition: all 0.3s ease;
+    max-width: 400px;
+    margin: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    box-shadow: none;
+  
+    &.collapsed {
+      max-height: 150px;
+      overflow: hidden;
+    }
+  
+    &.expanded {
+      max-height: none;
+    }
+  
+    .MuiCardContent-root {
+      padding: 16px;
+      border: 1px solid gray;
+    }
+  }
+  

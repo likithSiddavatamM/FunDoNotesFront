@@ -1,0 +1,19 @@
+.button-dashboard{
+    display: flex;
+    flex-direction: row;
+    width: 15%;
+    height: 10%;
+}
+.button-dashboard-takenote{
+    display: flex;
+    gap: 25%   ;
+}
+.DrawerIcon{
+    display: flex;
+    width: 20vh;
+    padding-left: 30%;
+    padding-top: 10%;
+
+    flex-direction: column;
+    justify-content: center;
+}
