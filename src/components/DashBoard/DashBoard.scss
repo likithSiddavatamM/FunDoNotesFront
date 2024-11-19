@@ -6,14 +6,17 @@
 }
 .button-dashboard-takenote{
     display: flex;
-    gap: 25%   ;
+    gap: 20%   ;
 }
 .DrawerIcon{
     display: flex;
     width: 20vh;
     padding-left: 30%;
     padding-top: 10%;
-
     flex-direction: column;
     justify-content: center;
+}
+
+.button-dashboard h1{
+    color: #1f5a4fd4;
 }

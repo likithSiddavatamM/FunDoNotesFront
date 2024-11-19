@@ -50,10 +50,10 @@ export default function TakeNote() {
       ref={noteRef}
       className="takeNote"
       style={{
-        width: "200%",
+        width: "30%",
         display: "flex",
         flexDirection: "column",
-        marginTop: "15%",
+        marginTop: "3%",
         border: takeNoteState ? "1px solid rgba(100, 100, 100, 0.3)" : "none",
         borderRadius: "2%",
         boxShadow: takeNoteState
@@ -101,7 +101,7 @@ export default function TakeNote() {
               marginBottom: "8px",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  border: takeNoteState || isDescriptionFocused || isTitleFocused ? "none" : "1px solid rgba(0, 0, 0, 0.23)", // Border shown when unfocused
+                  border: takeNoteState || isDescriptionFocused || isTitleFocused ? "none" : "1px solid rgba(0, 0, 0, 0.23)",
                 },
                 "&.Mui-focused fieldset": {
                   border: "none",

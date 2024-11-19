@@ -27,11 +27,9 @@ export function DashBoard() {
                         <span>Archive</span>
                     </div>
                 </Drawer>
-                <h1 className="dashboardText">DashBoard</h1>
+                <h1>DashBoard</h1>
                 </span>
-                <span>
-                    <TakeNote className="bbbb"/>
-                </span>
+                    <TakeNote/>
             </span>
             <div
             style={{
@@ -41,7 +39,7 @@ export function DashBoard() {
                 gap: "16px",
             }}
             >
-            <Outlet />
+            <Outlet/>
             </div> 
         </>
     );

@@ -4,7 +4,7 @@ import { Card, CardContent, IconButton, TextField, CardActions } from "@mui/mate
 import ArchiveIcon from "@mui/icons-material/Archive";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export const Note = ({data }) => {
+export const Note = ({ data }) => {
   const { title: initialTitle, description: initialDescription } = data;
 
   const [note, setNote] = useState({
@@ -12,8 +12,8 @@ export const Note = ({data }) => {
     description: initialDescription || "Default description text",
   });
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const textAreaRef = useRef(null);
-  const cardRef = useRef(null);
 
   const handleTitleChange = (event) => {
     setNote((prevNote) => ({ ...prevNote, title: event.target.value }));
@@ -31,35 +31,19 @@ export const Note = ({data }) => {
     }
   };
 
-  const handleCardClick = () => {
-    setIsExpanded((prev) => !prev);
-  };
-
-  const handleClickOutside = (event) => {
-    if (cardRef.current && !cardRef.current.contains(event.target)) {
-      setIsExpanded(false);
-    }
-  };
-
   useEffect(() => {
     handleResize();
   }, [note.description]);
 
-  useEffect(() => {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      }
-    }, []);
-
   return (
     <Card
-      ref={cardRef}
-      className={`note-card ${isExpanded ? "expanded" : "collapsed"}`}
-      onClick={handleCardClick}
+      className="note-card"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
         position: "relative",
         paddingBottom: "50px",
+        transition: "box-shadow 0.3s ease",
       }}
     >
       <CardContent>
@@ -67,27 +51,18 @@ export const Note = ({data }) => {
         <TextField
           placeholder="Title"
           fullWidth
-          value={isExpanded
-              ? note.title
-              : `${note.title.substring(0, 30)}${note.title.length > 30 ? "..." : ""}`
-          }          
+          value={note.title}
           onChange={handleTitleChange}
           variant="outlined"
           style={{ marginBottom: "16px" }}
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsExpanded(true);
-          }} 
+          onClick={(e) => e.stopPropagation()}
         />
 
         {/* Description */}
         <TextField
           placeholder="Description"
           fullWidth
-          value={isExpanded
-            ? note.description
-            : `${note.description.substring(0, 30)}${note.description.length > 30 ? "..." : ""}`
-        }
+          value={note.description}
           onChange={handleDescriptionChange}
           variant="outlined"
           multiline
@@ -96,19 +71,19 @@ export const Note = ({data }) => {
             resize: "none",
             minHeight: "50px",
             overflow: "hidden",
-            marginBottom: "16px"
+            marginBottom: "16px",
           }}
           inputRef={textAreaRef}
           onInput={handleResize}
         />
       </CardContent>
 
-      {isExpanded && (
+      {isHovered && (
         <CardActions
           style={{
             position: "absolute",
             bottom: "0px",
-            right : "0px",
+            right: "0px",
             display: "flex",
             flexDirection: "row",
             gap: "8px",
