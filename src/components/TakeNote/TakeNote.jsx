@@ -5,13 +5,21 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 
-export default function TakeNote() {
+export default function TakeNote({ onAddNote }) {
   const [takeNoteState, setTakeNoteState] = useState(false);
   const [note, setNote] = useState({ title: "", description: "" });
   const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
   const [isTitleFocused, setIsTitleFocused] = useState(false);
 
   const noteRef = useRef(null);
+  
+  const handleAdd = () => {
+    if (note.title || note.description) {
+      onAddNote(note);
+      setTakeNoteState(false);
+      setNote({ title: "", description: "" });
+    }
+  };
 
   const handleTitleFocus = () => {
     setTakeNoteState(true);
@@ -117,12 +125,12 @@ export default function TakeNote() {
               display: "flex",
               justifyContent: "right",
               marginTop: "8px",
-            }}
-          >
+            }} >
             <IconButton aria-label="archive">
               <ArchiveIcon />
             </IconButton>
-            <IconButton aria-label="add">
+            <IconButton aria-label="add"
+            onClick={handleAdd}>
               <AddIcon />
             </IconButton>
             <IconButton
@@ -130,8 +138,7 @@ export default function TakeNote() {
               onClick={() => {
                 setTakeNoteState(false);
                 setNote({ title: "", description: "" });
-              }}
-            >
+              }}>
               <CloseIcon />
             </IconButton>
           </span>

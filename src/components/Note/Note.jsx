@@ -54,7 +54,7 @@ export const Note = ({ data }) => {
           value={note.title}
           onChange={handleTitleChange}
           variant="outlined"
-          style={{ marginBottom: "16px" }}
+          style={{ marginBottom: "16px"}}
           onClick={(e) => e.stopPropagation()}
         />
 
@@ -75,6 +75,7 @@ export const Note = ({ data }) => {
           }}
           inputRef={textAreaRef}
           onInput={handleResize}
+          aria-readonly
         />
       </CardContent>
 

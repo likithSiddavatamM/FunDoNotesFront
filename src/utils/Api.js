@@ -1,19 +1,21 @@
 import axios from "axios"
 
 export const loginApiCall = async(email, password)=>{
-   try{
-   const accessToken = (await axios.post("http://localhost:3000/api/v1/fundonotes/user/login",{email: email, password: password})).data.accessToken
-   localStorage.setItem('accessToken', accessToken);
-   return accessToken
-   }
-   catch(e){
-      console.log(e)
-   }
+  try{
+    const accessToken = (await axios.post("http://localhost:3000/api/v1/fundonotes/user/login",
+      {email: email, password: password})).data.accessToken
+    
+    if(accessToken)
+      localStorage.setItem('accessToken', accessToken);
+    return accessToken
+  }catch(error){
+    console.log(error)
+  }
 }
 
 export const fetchNotes = async () => {
    try {
-     const response = await axios.get("http://localhost:3000/api/v1/fundonotes/usernotes/", {
+      const response = await axios.get("http://localhost:3000/api/v1/fundonotes/usernotes/", {
        headers: {
          Authorization: `Bearer ${localStorage.getItem('accessToken')}`, 
        },
@@ -26,9 +28,25 @@ export const fetchNotes = async () => {
 
 export const registerUser = async(firstName, lastName, email, password)=>{
    try {
-      const response = await axios.post("http://localhost:3000/api/v1/fundonotes/user",{firstName: firstName, lastName: lastName, email: email, password: password});
+      const response = await axios.post("http://localhost:3000/api/v1/fundonotes/user",
+        {firstName: firstName, lastName: lastName, email: email, password: password});
       return response.data.code
     } catch (error) {
       console.error("Error creating user:", error);
     }    
+}
+
+export const createNote = async(newNote)=>{
+  try {
+    const response = await axios.post("http://localhost:3000/api/v1/fundonotes/usernotes/", newNote,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response
+   } catch (error) {
+     console.error("Error creating user:", error);
+   }    
 }
