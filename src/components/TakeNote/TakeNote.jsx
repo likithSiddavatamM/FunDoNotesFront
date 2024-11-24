@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import TextField from "@mui/material/TextField";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
-import { IconButton } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";  // Import IconButton from @mui/material
+import { ArchiveOutlined, Add, Close } from "@mui/icons-material";  // Import icons from @mui/icons-material
+import { BrushOutlined, CheckBoxOutlined, InsertPhotoOutlined, Delete , AddAlertOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined} from '@mui/icons-material';
+import InputAdornment from '@mui/material/InputAdornment';
+
 
 export default function TakeNote({ onAddNote }) {
   const [takeNoteState, setTakeNoteState] = useState(false);
@@ -56,9 +56,9 @@ export default function TakeNote({ onAddNote }) {
   return (
     <span
       ref={noteRef}
-      className="takeNote"
+      className={`takeNote ${takeNoteState ? "active" : ""}`}
       style={{
-        width: "30%",
+        width: "33em",
         display: "flex",
         flexDirection: "column",
         marginTop: "3%",
@@ -68,8 +68,6 @@ export default function TakeNote({ onAddNote }) {
         ? "0px 6px 16px rgba(0, 0, 0, 0.2)" : "none",
       }}
     >
-      
-      {/* Title Field */}
       <TextField
         placeholder={takeNoteState ? "Title" : "Take a note"}
         onFocus={handleTitleFocus}
@@ -77,6 +75,7 @@ export default function TakeNote({ onAddNote }) {
         onChange={(e) => setNote({ ...note, title: e.target.value })}
         onBlur={handleTitleBlur}
         fullWidth
+        multiline
         sx={{
           textAlign: "center",
           marginBottom: "8px",
@@ -89,6 +88,21 @@ export default function TakeNote({ onAddNote }) {
               border: "none",
             },
           },
+        }}
+        InputProps={{
+          endAdornment: !takeNoteState?(
+            <InputAdornment position="end">
+              <IconButton onClick={() => console.log("CheckBoxOutlined")}>
+                <CheckBoxOutlined />
+              </IconButton>
+              <IconButton onClick={() => console.log("BrushOutlined")}>
+                <BrushOutlined />
+              </IconButton>
+              <IconButton onClick={() => console.log("InsertPhotoOutlined")}>
+                <InsertPhotoOutlined />
+              </IconButton>
+            </InputAdornment>
+          ):null
         }}
         
       />
@@ -123,28 +137,53 @@ export default function TakeNote({ onAddNote }) {
             className="Icons"
             style={{
               display: "flex",
-              justifyContent: "right",
+              justifyContent: "space-evenly",
               marginTop: "8px",
             }} >
+            <IconButton onClick={() => console.log("Bell Alert Icon")} >
+              <AddAlertOutlined className="icon-button" />
+            </IconButton>
+
+            <IconButton onClick={() => console.log("Person add")} >
+              <PersonAddAlt1Outlined className="icon-button" />
+            </IconButton>
+
+            <IconButton onClick={() => console.log("PaletteOutlined")} >
+              <PaletteOutlined className="icon-button" />
+            </IconButton>
+
+            <IconButton onClick={() => console.log("InsertPhotoOutlined")} >
+              <InsertPhotoOutlined className="icon-button" />
+            </IconButton>
+
             <IconButton aria-label="archive">
-              <ArchiveIcon />
+              <ArchiveOutlined />
             </IconButton>
-            <IconButton aria-label="add"
-            onClick={handleAdd}>
-              <AddIcon />
+
+            <IconButton onClick={() => console.log("Note Deleted")}>
+              <Delete />
             </IconButton>
+
+            <IconButton onClick={() => console.log("MoreVertOutlined")} >
+              <MoreVertOutlined className="icon-button" />
+            </IconButton>
+
+            <IconButton aria-label="add" onClick={handleAdd}>
+              <Add />
+            </IconButton>
+
             <IconButton
               aria-label="close"
               onClick={() => {
+                handleAdd();
                 setTakeNoteState(false);
                 setNote({ title: "", description: "" });
               }}>
-              <CloseIcon />
+              <Close />
             </IconButton>
           </span>
         </>
       )} 
     </span>
-
   );
 }

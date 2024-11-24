@@ -1,8 +1,11 @@
 .button-dashboard{
     display: flex;
     flex-direction: row;
-    width: 15%;
-    height: 10%;
+    width: 100%;
+    height: 4em;
+    position: fixed;
+    background-color: white;
+    z-index: 100;
 }
 .button-dashboard-takenote{
     display: flex;
@@ -18,5 +21,16 @@
 }
 
 .button-dashboard h1{
+    position: relative;
     color: #1f5a4fd4;
+    left: 1%;
+    margin: 0px;
+    padding-top: 12px;
+    text-align: center;
+
+}
+
+.drawerButton{
+    position: fixed;
+    left:1%;
 }

@@ -10,30 +10,33 @@ export function DashBoard() {
     return (
         <>
             <span className="button-dashboard">
-            <IconButton 
-                edge="start" 
-                aria-label="menu" 
-                onClick={() => {
-                    setDrawerState(!drawerState);
-                }}
-                className="drawerButton">
-                <MenuIcon />
-            </IconButton>
-            <Drawer open={drawerState} onClose={() => setDrawerState(false)}>
-                <div className="DrawerIcon">
-                    <span style={{cursor:"default"}}>Notes</span>
-                    <br/>
-                    <span style={{cursor:"default"}}>Archive</span>
-                </div>
-            </Drawer>
-            <h1>DashBoard</h1>
+                <IconButton 
+                    edge="start" 
+                    aria-label="menu" 
+                    onClick={() => {
+                        setDrawerState(!drawerState);
+                    }}
+                    className="drawerButton">
+                    <MenuIcon />
+                </IconButton>
+                <Drawer open={drawerState} onClose={() => setDrawerState(false)}>
+                    <div className="DrawerIcon">
+                        <span style={{cursor:"default"}}>Notes</span>
+                        <br/>
+                        <span style={{cursor:"default"}}>Archive</span>
+                    </div>
+                </Drawer>
+                <h1>FunDoNotes</h1>
             </span>
             <div
                 style={{
-                    width: "100%",
+                    width: "98%",
                     display: "flex",
                     flexWrap: "wrap",
                     gap: "16px",
+                    position:"relative",
+                    top:"1.7em",
+                    paddingLeft:"2%"
                 }}>
                 <Outlet/>
             </div> 

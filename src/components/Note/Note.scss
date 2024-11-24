@@ -1,25 +1,77 @@
 .note-card {
-    transition: all 0.3s ease;
-    max-width: 400px;
-    margin: 20px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
+  transition: all 0.3s ease;
+  max-width: 400px;
+  margin: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  border: none;
+  padding-bottom: 50px;
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 9px !important;
+
+  &:hover {
+    box-shadow: 0 0px 33px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  &.collapsed {
+    max-height: 137px;
+    overflow: hidden;
+    border: none;
+  }
+
+  &.expanded {
+    max-height: 100%;
+    border: none;
+  }
+
   
-    &.collapsed {
-      max-height: 137px;
-      overflow: hidden;
-      border: 1px solid gray;
+
+  .MuiCardContent-root {
+    padding: 16px;
+    box-shadow: none;
+    border: none;
+    
+  }
+
+  .note-title,
+  .note-description {
+    cursor: default;
+    & .MuiOutlinedInput-root {
+      cursor: default;
+      pointer-events: none;
+      border: none;
+      
+      & fieldset {
+        border: none;
+      }
     }
-  
-    &.expanded {
-      max-height: 100%;
-      border: 1px solid gray;    }
-  
-    .MuiCardContent-root {
-      padding: 16px;
-      box-shadow: none;
+
+    & .MuiInputBase-input {
+      cursor: default;
     }
   }
-  
+
+  .note-description {
+    resize: none;
+    min-height: 50px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .note-actions {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.icon-button{
+  font-size: 24px;
+  color: #202124;
+  opacity: 0.7; 
+}

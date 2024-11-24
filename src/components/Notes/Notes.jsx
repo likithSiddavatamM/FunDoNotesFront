@@ -10,7 +10,8 @@ export const Notes=()=>{
   
   const handleAddNote = async (newNote) => {
     try {
-      
+      console.log(newNote.title ,"+++++++", newNote.description)
+
       let createNoteResponse = await createNote(newNote)
       if(createNoteResponse.data.code)
         setNotes((prevNotes) => [...prevNotes, newNote]);
@@ -31,7 +32,7 @@ export const Notes=()=>{
   
   return(
     <>
-      <span style={{width: "100%", display: "flex", position: "relative", justifyContent: "center", alignItems: "start", top:"-1em"}}>
+      <span style={{width: "100%", display: "flex", position: "relative", justifyContent: "center", alignItems: "start", top:"0px" }}>
       <TakeNote onAddNote={handleAddNote}/>
       </span>
       {
