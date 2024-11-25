@@ -3,8 +3,8 @@ import { Note } from "../Note/Note";
 import { createNote, fetchNotes } from "../../utils/Api";
 import { Note as NoteIcon } from '@mui/icons-material';
 import TakeNote from "../TakeNote/TakeNote";
-
 import './Notes.scss'
+
 export const Notes=()=>{
   const [notes, setNotes] = useState([]);
   
@@ -38,8 +38,8 @@ export const Notes=()=>{
       {
        notes.length
 
-        ?notes.map((note, index) => (
-        <Note key={index} data={note}/>
+        ?notes.map((note) => (
+        <Note key={note._id} data={note}/>
         )) 
       
         :<div className="Notes-no-notes-display">

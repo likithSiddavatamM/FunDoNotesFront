@@ -3,6 +3,7 @@ import Signup from "./components/SignUp/SignUp.js"
 import Signin from "./components/SignIn/SignIn.js"
 import {Notes} from "./components/Notes/Notes.jsx";
 import { DashBoard } from "./components/DashBoard/DashBoard.jsx";
+import Archive from "./components/Archive/Archive.jsx";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -19,8 +20,13 @@ function Routing(){
             element: <DashBoard/>,
                 children:[{
                     path: 'notes',
-                    element: <Notes notesAll={[]} />
-                }]
+                    element: <Notes/>
+                },
+                {
+                    path: 'archive',
+                    element: <Archive/>
+                }
+            ]
         }
     ])
 

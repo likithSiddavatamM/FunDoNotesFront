@@ -10,19 +10,8 @@ export const Note = ({ data }) => {
     title: initialTitle,
     description: initialDescription,
   });
-  // const [isExpanded, setIsExpanded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const textAreaRef = useRef(null);
-
-  // const handleTitleChange = (event) => {
-  //   setNote((prevNote) => ({ ...prevNote, title: event.target.value }));
-  // };
-
-  // const handleDescriptionChange = (event) => {
-  //   setNote((prevNote) => ({ ...prevNote, description: event.target.value }));
-  //   setIsExpanded(true);
-  // };
-
   const handleResize = () => {
     if (textAreaRef.current) {
       textAreaRef.current.style.height = "auto";
@@ -41,7 +30,6 @@ export const Note = ({ data }) => {
         fullWidth
         multiline
         value={note.title}
-        // onChange={handleTitleChange}
         variant="outlined"
         onClick={(e) => e.stopPropagation()}
         className="note-title"
@@ -51,7 +39,6 @@ export const Note = ({ data }) => {
       <TextField
         fullWidth
         value={note.description}
-        // onChange={handleDescriptionChange}
         variant="outlined"
         multiline
         rows={1}
@@ -66,31 +53,31 @@ export const Note = ({ data }) => {
       <CardActions className="note-actions">
         
         <IconButton onClick={() => console.log("Bell Alert Icon")} >
-          <AddAlertOutlined className="icon-button" />
+          <AddAlertOutlined />
         </IconButton>
 
         <IconButton onClick={() => console.log("Person add")} >
-          <PersonAddAlt1Outlined className="icon-button" />
+          <PersonAddAlt1Outlined />
         </IconButton>
 
         <IconButton onClick={() => console.log("PaletteOutlined")} >
-          <PaletteOutlined className="icon-button" />
+          <PaletteOutlined />
         </IconButton>
 
         <IconButton onClick={() => console.log("InsertPhotoOutlined")} >
-          <InsertPhotoOutlined className="icon-button" />
+          <InsertPhotoOutlined />
         </IconButton>
 
         <IconButton onClick={() => console.log("Note Archived")} >
-          <ArchiveOutlined className="icon-button" />
+          <ArchiveOutlined />
         </IconButton>
   
         <IconButton onClick={() => console.log("Note Deleted")}>
           <Delete />
         </IconButton>
 
-        <IconButton onClick={() => console.log("MoreVertOutlined")} >
-          <MoreVertOutlined className="icon-button" />
+        <IconButton style={{padding:"0px"}} onClick={() => console.log("MoreVertOutlined")} >
+          <MoreVertOutlined className="custom-icon" />
         </IconButton>
       </CardActions>
     )}

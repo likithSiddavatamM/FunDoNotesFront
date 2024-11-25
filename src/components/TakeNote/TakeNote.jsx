@@ -109,7 +109,6 @@ export default function TakeNote({ onAddNote }) {
         
       />
 
-      {/* Description Field and Icons */}
       {takeNoteState && (
         <>
           <TextField
@@ -134,7 +133,6 @@ export default function TakeNote({ onAddNote }) {
             }}
           />
 
-          {/* Icons */}
           <span style={{display:"flex", justifyContent:"space-around", gap:"55px"}}>
           <span
             className="Icons"
