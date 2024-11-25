@@ -1,5 +1,5 @@
 import './SignUp.scss'
-import SignUpImg1 from '../../assets/Signup.png'
+import SignUpImg1 from '../../assets/3532323.png'
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../utils/Api';
@@ -32,7 +32,7 @@ export default function SignUp() {
   }
 
   return (
-    <div className='simple'>
+    <div className='signup-fullscreen'>
       <div className="signup-container">
         <div className="signup-form-box">
           <h1 style={{fontSize:"1.9em"}} >FunDoNotes</h1>
@@ -56,7 +56,7 @@ export default function SignUp() {
           </form>
         </div>
         <div className="signup-info-box">
-          <img src={SignUpImg1} alt="User Icon" style={{ width: '85%', height: '50%' }} />
+          <img src={SignUpImg1} alt="User Icon" style={{ width: '85%', height: '50%' , opacity: '70%'}} />
           <p>One account. All of Fundo working for you.</p>
         </div>
       </div>

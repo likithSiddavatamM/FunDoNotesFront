@@ -79,10 +79,12 @@ export default function TakeNote({ onAddNote }) {
         sx={{
           textAlign: "center",
           marginBottom: "8px",
+          borderRadius:"10px",
           boxShadow: takeNoteState ? "none" : "0px 2px 8px rgba(0, 0, 0, 0.15)" ,
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
               border: takeNoteState || isTitleFocused ? "none" : "1px solid rgba(100, 100, 100, 0.3)",
+              borderRadius:"10px"
             },
             "&.Mui-focused fieldset": {
               border: "none",
@@ -133,13 +135,15 @@ export default function TakeNote({ onAddNote }) {
           />
 
           {/* Icons */}
+          <span style={{display:"flex", justifyContent:"space-around", gap:"55px"}}>
           <span
             className="Icons"
             style={{
               display: "flex",
               justifyContent: "space-evenly",
-              marginTop: "8px",
-            }} >
+              marginTop: "18px",
+              gap:"15px"
+            }}>
             <IconButton onClick={() => console.log("Bell Alert Icon")} >
               <AddAlertOutlined className="icon-button" />
             </IconButton>
@@ -171,7 +175,15 @@ export default function TakeNote({ onAddNote }) {
             <IconButton aria-label="add" onClick={handleAdd}>
               <Add />
             </IconButton>
-
+            </span>
+            <span
+            className="Icons"
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              marginTop: "18px",
+              gap:"11px"
+            }}>
             <IconButton
               aria-label="close"
               onClick={() => {
@@ -181,6 +193,7 @@ export default function TakeNote({ onAddNote }) {
               }}>
               <Close />
             </IconButton>
+          </span>
           </span>
         </>
       )} 

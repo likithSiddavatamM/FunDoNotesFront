@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Drawer, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
+import FunDoNotesIcon from '../../assets/3429149.png'
 import './DashBoard.scss';
 
 export function DashBoard() {
@@ -10,23 +11,26 @@ export function DashBoard() {
     return (
         <>
             <span className="button-dashboard">
-                <IconButton 
-                    edge="start" 
-                    aria-label="menu" 
-                    onClick={() => {
-                        setDrawerState(!drawerState);
-                    }}
-                    className="drawerButton">
-                    <MenuIcon />
-                </IconButton>
-                <Drawer open={drawerState} onClose={() => setDrawerState(false)}>
-                    <div className="DrawerIcon">
-                        <span style={{cursor:"default"}}>Notes</span>
-                        <br/>
-                        <span style={{cursor:"default"}}>Archive</span>
-                    </div>
-                </Drawer>
-                <h1>FunDoNotes</h1>
+                <span style={{   display:"flex", justifyContent: "space-evenly", gap:"10px" }}>
+                    <IconButton 
+                        edge="end" 
+                        aria-label="menu" 
+                        onClick={() => {
+                            setDrawerState(!drawerState);
+                        }}
+                        className="drawerButton">
+                        <MenuIcon />
+                    </IconButton>
+                    <Drawer open={drawerState} onClose={() => setDrawerState(false)}>
+                        <div className="DrawerIcon">
+                            <span style={{cursor:"default"}}>Notes</span>
+                            <br/>
+                            <span style={{cursor:"default"}}>Archive</span>
+                        </div>
+                    </Drawer>
+                    <img src={FunDoNotesIcon} alt="User Icon" style={{padding:"10px", width: '3em', height: '3em' }} />
+                    <h1>FunDoNotes</h1> 
+                </span>
             </span>
             <div
                 style={{
@@ -35,8 +39,8 @@ export function DashBoard() {
                     flexWrap: "wrap",
                     gap: "16px",
                     position:"relative",
-                    top:"1.7em",
-                    paddingLeft:"2%"
+                    top:"3em",
+                    paddingLeft:"2%",
                 }}>
                 <Outlet/>
             </div> 
