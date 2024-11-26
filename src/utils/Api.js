@@ -81,6 +81,40 @@ export const archive = async(id)=>{
     console.log(response,"---------------------------")
     return response
    } catch (error) {
+     console.error("Error archiving note:", error);
+   }    
+}
+
+export const trashBins = async()=>{
+  try {
+    const response = await axios.get("http://localhost:3000/api/v1/fundonotes/usernotes/trash/trashbin",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+
+    return response
+   } catch (error) {
      console.error("Error creating user:", error);
    }    
+}
+
+export const trash = async(id)=>{
+  try {
+    const response = await axios.put(
+      `http://localhost:3000/api/v1/fundonotes/usernotes/${id}/trash`,
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    console.log(response,"---------------------------")
+    return response
+   } catch (error) {
+    console.error("Error trashing note:", error);
+  }    
 }

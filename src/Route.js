@@ -4,6 +4,7 @@ import Signin from "./components/SignIn/SignIn.js"
 import {Notes} from "./components/Notes/Notes.jsx";
 import { DashBoard } from "./components/DashBoard/DashBoard.jsx";
 import Archive from "./components/Archive/Archive.jsx";
+import Trash from "./components/TrashBin/TrashBin.jsx";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -25,6 +26,10 @@ function Routing(){
                 {
                     path: 'archive',
                     element: <Archive/>
+                },
+                {
+                    path: 'trash',
+                    element: <Trash/>
                 }
             ]
         }

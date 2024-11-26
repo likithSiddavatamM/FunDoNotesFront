@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Note } from "../Note/Note";
-import { createNote, fetchNotes } from "../../utils/Api";
+import { createNote, fetchNotes, trash } from "../../utils/Api";
 import { Note as NoteIcon } from '@mui/icons-material';
 import TakeNote from "../TakeNote/TakeNote";
 import { archive } from "../../utils/Api";
@@ -26,6 +26,14 @@ export const Notes=()=>{
     await archive(data._id);
   };
 
+  let trashNote = async (data) => {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((note) => note._id !== data._id);
+    });
+    await trash(data._id);
+  };
+
+
   useEffect(() => {
     (async()=>{
       let userData = await fetchNotes();
@@ -45,7 +53,7 @@ export const Notes=()=>{
        notes.length
 
         ?notes.map((note) => (
-        <Note key={note._id} data={note} archivenote={archiveNote}/>
+        <Note key={note._id} data={note} archivenote={archiveNote} trashNote={trashNote}/>
         )) 
       
         :<div className="Notes-no-notes-display">

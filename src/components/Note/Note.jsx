@@ -2,8 +2,9 @@ import "./Note.scss";
 import React, { useState, useRef, useEffect } from "react";
 import { Card, CardContent, IconButton, TextField, CardActions } from "@mui/material";
 import { ArchiveOutlined , Delete , AddAlertOutlined, InsertPhotoOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined } from '@mui/icons-material';
+import RestoreIcon from '@mui/icons-material/Restore';
 
-export const Note = ({ data , archivenote, unArchive}) => {
+export const Note = ({ data , archivenote, unArchive, trashNote, unTrash}) => {
   const { title: initialTitle, description: initialDescription } = data;
 
   const [note, setNote] = useState({
@@ -76,9 +77,13 @@ export const Note = ({ data , archivenote, unArchive}) => {
           <ArchiveOutlined />
         </IconButton>}
 
-        <IconButton onClick={() => console.log("Note Deleted")}>
+        {trashNote&&<IconButton onClick={() => {trashNote(data)}}>
           <Delete />
-        </IconButton>
+        </IconButton>}
+
+        {unTrash&&<IconButton onClick={() => {unTrash(data)}}>
+          <RestoreIcon/>
+        </IconButton>}
 
         <IconButton style={{padding:"0px"}} onClick={() => console.log("MoreVertOutlined")} >
           <MoreVertOutlined className="custom-icon" />
