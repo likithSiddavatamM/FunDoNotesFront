@@ -61,7 +61,8 @@ export default function TakeNote({ onAddNote }) {
         width: "33em",
         display: "flex",
         flexDirection: "column",
-        marginTop: "3%",
+        marginTop: "2em",
+        marginBottom: "1em",
         border: takeNoteState ? "1px solid rgba(100, 100, 100, 0.3)" : "none",
         borderRadius: "2%",
         boxShadow: takeNoteState
