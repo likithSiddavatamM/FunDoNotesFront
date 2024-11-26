@@ -3,6 +3,7 @@ import { Note } from "../Note/Note";
 import { createNote, fetchNotes } from "../../utils/Api";
 import { Note as NoteIcon } from '@mui/icons-material';
 import TakeNote from "../TakeNote/TakeNote";
+import { archive } from "../../utils/Api";
 import './Notes.scss'
 
 export const Notes=()=>{
@@ -10,14 +11,19 @@ export const Notes=()=>{
   
   const handleAddNote = async (newNote) => {
     try {
-      console.log(newNote.title ,"+++++++", newNote.description)
-
       let createNoteResponse = await createNote(newNote)
       if(createNoteResponse.data.code)
         setNotes((prevNotes) => [...prevNotes, newNote]);
     } catch (error) {
       console.error("Failed to add note:", error);
     }
+  };
+
+  let archiveNote = async (data) => {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((note) => note._id !== data._id);
+    });
+    await archive(data._id);
   };
 
   useEffect(() => {
@@ -39,7 +45,7 @@ export const Notes=()=>{
        notes.length
 
         ?notes.map((note) => (
-        <Note key={note._id} data={note}/>
+        <Note key={note._id} data={note} archivenote={archiveNote}/>
         )) 
       
         :<div className="Notes-no-notes-display">

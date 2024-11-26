@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Card, CardContent, IconButton, TextField, CardActions } from "@mui/material";
 import { ArchiveOutlined , Delete , AddAlertOutlined, InsertPhotoOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined } from '@mui/icons-material';
 
-export const Note = ({ data }) => {
+export const Note = ({ data , archivenote, unArchive}) => {
   const { title: initialTitle, description: initialDescription } = data;
 
   const [note, setNote] = useState({
@@ -68,10 +68,14 @@ export const Note = ({ data }) => {
           <InsertPhotoOutlined />
         </IconButton>
 
-        <IconButton onClick={() => console.log("Note Archived")} >
+        {archivenote&&<IconButton onClick={() => {archivenote(data)}} >
           <ArchiveOutlined />
-        </IconButton>
+        </IconButton>}
   
+        {unArchive&&<IconButton style={{ transform: 'rotate(180deg)' }} onClick={() => {unArchive(data)}} >
+          <ArchiveOutlined />
+        </IconButton>}
+
         <IconButton onClick={() => console.log("Note Deleted")}>
           <Delete />
         </IconButton>

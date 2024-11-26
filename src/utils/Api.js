@@ -50,3 +50,37 @@ export const createNote = async(newNote)=>{
      console.error("Error creating user:", error);
    }    
 }
+
+export const archives = async()=>{
+  try {
+    const response = await axios.get("http://localhost:3000/api/v1/fundonotes/usernotes/archive/archives",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+
+    return response
+   } catch (error) {
+     console.error("Error creating user:", error);
+   }    
+}
+
+export const archive = async(id)=>{
+  try {
+    const response = await axios.put(
+      `http://localhost:3000/api/v1/fundonotes/usernotes/${id}/archive`,
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    console.log(response,"---------------------------")
+    return response
+   } catch (error) {
+     console.error("Error creating user:", error);
+   }    
+}
