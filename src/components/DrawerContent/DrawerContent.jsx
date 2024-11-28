@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import NotesIcon from "@mui/icons-material/Notes";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import LabelIcon from "@mui/icons-material/Label";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ArchiveIcon from "@mui/icons-material/Archive";
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
+import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 
 export default ({ drawerState, handleNavigate ,setDrawerState}) => {
   const [hoveredItem, setHoveredItem] = useState(null);
 
   const listItems = [
-    { key: "notes", text: "Notes", icon: <NotesIcon /> },
-    { key: "reminder", text: "Reminder", icon: <NotificationsIcon /> },
-    { key: "label", text: "Label", icon: <LabelIcon /> },
-    { key: "trash", text: "Trash", icon: <DeleteIcon /> },
-    { key: "archive", text: "Archive", icon: <ArchiveIcon /> },
+    { key: "notes", text: "Notes", icon: <LightbulbOutlinedIcon style={{fontSize:"2em"}}/> },
+    { key: "reminder", text: "Reminder", icon: <NotificationsOutlinedIcon style={{fontSize:"2em"}}/> },
+    { key: "label", text: "Label", icon: <ModeEditOutlinedIcon style={{fontSize:"2em"}}/> },
+    { key: "trash", text: "Trash", icon: <DeleteOutlineOutlinedIcon style={{fontSize:"2em"}}/> },
+    { key: "archive", text: "Archive", icon: <ArchiveOutlinedIcon style={{fontSize:"2em"}}/> },
   ];
 
   return (
@@ -25,9 +25,10 @@ export default ({ drawerState, handleNavigate ,setDrawerState}) => {
           style={{
             borderRadius: drawerState ? "0px 19px 19px 0px" : "100px",
             width: drawerState ? "100%" : "3em",
-            backgroundColor: hoveredItem === item.key ? "#f0f0f0" : "white",
+            backgroundColor: hoveredItem === item.key ? "rgb(254,239,195)" : "white",
             transition: "background-color 0.3s ease",
             cursor:"default",
+            paddingLeft:"10px"
 
           }}
           button
@@ -35,7 +36,7 @@ export default ({ drawerState, handleNavigate ,setDrawerState}) => {
           onMouseEnter={() => {setDrawerState(true); setHoveredItem(item.key)}}
           onMouseLeave={() => {setDrawerState(false); setHoveredItem(null)}}
         >
-          <ListItemIcon style={{color:hoveredItem === item.key?"#1f5a4fd4":"gray"}}>{item.icon}</ListItemIcon>
+          <ListItemIcon style={{color:hoveredItem === item.key?"black":"gray",}}>{item.icon}</ListItemIcon>
           {drawerState && <ListItemText style={{cursor:"default"}} primary={item.text} />}
         </ListItem>
       ))}

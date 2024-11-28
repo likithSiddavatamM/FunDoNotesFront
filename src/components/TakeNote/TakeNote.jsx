@@ -3,6 +3,8 @@ import { IconButton, TextField } from "@mui/material";
 import { ArchiveOutlined, Add, Close } from "@mui/icons-material";
 import { BrushOutlined, CheckBoxOutlined, InsertPhotoOutlined, Delete , AddAlertOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined} from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
+import AddIcon from "@mui/icons-material/Add";
+import { Button } from "@mui/material";
 
 
 export default function TakeNote({ onAddNote }) {
@@ -135,64 +137,66 @@ export default function TakeNote({ onAddNote }) {
           />
 
           <span style={{display:"flex", justifyContent:"space-around", gap:"55px"}}>
-          <span
-            className="Icons"
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              marginTop: "18px",
-              gap:"15px"
-            }}>
-            <IconButton onClick={() => console.log("Bell Alert Icon")} >
-              <AddAlertOutlined className="icon-button" />
-            </IconButton>
+            <span
+              className="Icons"
+              style={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                marginTop: "18px",
+                gap:"15px"
+              }}>
+              <IconButton onClick={() => console.log("Bell Alert Icon")} >
+                <AddAlertOutlined className="icon-button" />
+              </IconButton>
 
-            <IconButton onClick={() => console.log("Person add")} >
-              <PersonAddAlt1Outlined className="icon-button" />
-            </IconButton>
+              <IconButton onClick={() => console.log("Person add")} >
+                <PersonAddAlt1Outlined className="icon-button" />
+              </IconButton>
 
-            <IconButton onClick={() => console.log("PaletteOutlined")} >
-              <PaletteOutlined className="icon-button" />
-            </IconButton>
+              <IconButton onClick={() => console.log("PaletteOutlined")} >
+                <PaletteOutlined className="icon-button" />
+              </IconButton>
 
-            <IconButton onClick={() => console.log("InsertPhotoOutlined")} >
-              <InsertPhotoOutlined className="icon-button" />
-            </IconButton>
+              <IconButton onClick={() => console.log("InsertPhotoOutlined")} >
+                <InsertPhotoOutlined className="icon-button" />
+              </IconButton>
 
-            <IconButton aria-label="archive">
-              <ArchiveOutlined />
-            </IconButton>
+              <IconButton aria-label="archive">
+                <ArchiveOutlined />
+              </IconButton>
 
-            <IconButton onClick={() => console.log("Note Deleted")}>
-              <Delete />
-            </IconButton>
+              <IconButton onClick={() => console.log("MoreVertOutlined")} >
+                <MoreVertOutlined className="icon-button" />
+              </IconButton>
 
-            <IconButton onClick={() => console.log("MoreVertOutlined")} >
-              <MoreVertOutlined className="icon-button" />
-            </IconButton>
-
-            <IconButton aria-label="add" onClick={handleAdd}>
-              <Add />
-            </IconButton>
+              <Button 
+                variant="outlined" 
+                color="primary" 
+                disabled={(note.title||note.description)?false:true}      
+                onClick={handleAdd}
+                style={{fontSize:"medium", borderRadius:"1em", color:(note.title||note.description)&&"rgba(0, 0, 0, 0.59)", border:"none"}}
+                >
+              Add
+              </Button>
             </span>
             <span
-            className="Icons"
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              marginTop: "18px",
-              gap:"11px"
-            }}>
-            <IconButton
-              aria-label="close"
-              onClick={() => {
-                handleAdd();
-                setTakeNoteState(false);
-                setNote({ title: "", description: "" });
+              className="Icons"
+              style={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                marginTop: "18px",
+                gap:"11px"
               }}>
-              <Close />
-            </IconButton>
-          </span>
+              <IconButton
+                aria-label="close"
+                onClick={() => {
+                  handleAdd();
+                  setTakeNoteState(false);
+                  setNote({ title: "", description: "" });
+                }}>
+                <Close />
+              </IconButton>
+            </span>
           </span>
         </>
       )} 

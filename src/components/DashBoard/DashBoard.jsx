@@ -1,19 +1,27 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { Drawer, IconButton } from "@mui/material";
+import { Drawer, IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useRef, useEffect } from "react";
-import FunDoNotesIcon from "../../assets/3429149.png";
+import downloadKeep from "../../assets/downloadKeep.png"
 import "./DashBoard.scss";
 import DrawerContent from "../DrawerContent/DrawerContent";
 import { TextField, InputAdornment } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import { AccountCircle, Search } from "@mui/icons-material";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import DnsOutlinedIcon from '@mui/icons-material/DnsOutlined';
+import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
+import AppsIcon from '@mui/icons-material/Apps';
 
 export function DashBoard() {
   const [drawerState, setDrawerState] = useState(false);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef(null);
+  const [log, setLog] = useState(null);
 
+  const handleMenu = (event) => {
+    setLog(event.currentTarget);
+  };
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -25,8 +33,16 @@ export function DashBoard() {
 
   const handleClickOutside = (event) => {
     if (searchRef.current && !searchRef.current.contains(event.target)) {
-      setSearchQuery(""); // Clear the search text
+      setSearchQuery("");
     }
+  };
+
+  const handleClose = (logout) => {
+    if(logout=="logout"){
+      localStorage.removeItem("accessToken");
+      navigate("/")
+    }
+    setLog(null);
   };
 
   useEffect(() => {
@@ -38,52 +54,105 @@ export function DashBoard() {
   
   return (
     <>
-      <span className="button-dashboard">
-        <span style={{ display: "flex", justifyContent: "space-evenly", gap: "10px" }}>
-          <IconButton
-            edge="end"
-            aria-label="menu"
-            onClick={() => setDrawerState(!drawerState)}
-            className="drawerButton"
-          >
-            <MenuIcon />
-          </IconButton>
+      <header className="button-dashboard">
+        <div style={{ display: "flex", justifyContent: "space-evenly", gap: "2em", paddingTop: "5px", width:"59%"}}>
+          <div style={{ display: "flex",}}>
+            <IconButton
+              edge="start"
+              aria-label="menu"
+              onClick={() => setDrawerState(!drawerState)}
+              className="drawerButton"
+            >
+              <MenuIcon sx={{fontSize:"1.5em"}} />
+            </IconButton>
 
-          <img src={FunDoNotesIcon} alt="User Icon" style={{ padding: "10px", width: "3em", height: "3em" }} />
-          <h1>FunDoNotes</h1>
-          <div style={{ marginLeft:"23em", padding: "7px", width: "30em" }} ref={searchRef}>
-            <TextField
-              placeholder="Search..."
-              variant="outlined"
-              fullWidth
-              value={searchQuery}
-              onChange={handleSearchChange}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "20px",
-                  background:"rgb(0 0 12 / 7%)",
-                },
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search/>
-                  </InputAdornment>
-                ),
-              }}
+            <img
+              src={downloadKeep}
+              alt="User Icon"
+              style={{ padding: "10px", width: "2em", height: "3em" }}
             />
+            <h1>FunDoNotes</h1>
+            </div>
+            <div
+              style={{padding: "7px", width: "43em" }}
+              ref={searchRef}
+            >
+              <TextField
+                placeholder="Search..."
+                variant="outlined"
+                fullWidth
+                value={searchQuery}
+                onChange={handleSearchChange}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "10px",
+                    background: "#f1f3f4",
+                    border:"none",
+                    fontSize:"1.3em"
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Search sx={{fontSize:"1.3em"}} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
           </div>
-        </span>
-      </span>
+          
 
-      <div style={{ display: "flex", height: "100%", position: "relative", top: "4em" }}>
+        </div>
+        <div style={{display:"flex",}}>
+          <div style={{display:"flex", gap:"10px"}}>
+              <IconButton >
+              <RefreshIcon style={{fontSize:"1.2em"}}/>
+              </IconButton>
+              <IconButton >
+              <DnsOutlinedIcon style={{fontSize:"1.1em"}}/>
+              </IconButton>  
+              <IconButton >
+              <SettingsSharpIcon style={{fontSize:"1.1em"}}/>
+              </IconButton>      
+              <IconButton >
+              <AppsIcon style={{fontSize:"1.1em"}}/>
+              </IconButton>       
+               <IconButton
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle style={{fontSize:"1.5em"}}/>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                log={log}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(log)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={()=>{handleClose("logout")}}>Logout</MenuItem>
+              </Menu>
+            </div>
+
+          </div>
+      </header>
+
+      <div style={{ display: "flex", height: "100%", position: "relative", top: "5.5em" }}>
       <div style={{width:drawerState?"20%":"4em",}}>
         <Drawer
           variant="persistent"
           open={drawerState}
           PaperProps={{
             style: {
-              width: drawerState ? "250px" : "50px",
+              width: drawerState ? "250px" : "90px",
               position: "relative",
               height: "100%",
               border: "none",

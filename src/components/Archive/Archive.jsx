@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Note } from "../Note/Note";
 import { archives, archive } from "../../utils/Api";
 import { Note as NoteIcon } from '@mui/icons-material';
+import { trash } from "../../utils/Api";
 import './Archive.scss'
 
 let Archive=()=>{
@@ -21,13 +22,21 @@ setArchiveData((prevNotes) => {
   });
 }
 
+let trashNote = async (data) => {
+  await trash(data._id);
+  setArchiveData((prevNotes) => {
+    return prevNotes.filter((note) => note._id !== data._id);
+});
+  
+};
+
 return(
     <>
       {
        archiveData.length
 
         ?archiveData.map((note) => (
-        <Note key={note._id} data={note} unArchive={unArchive}/>
+        <Note key={note._id} data={note} unArchive={unArchive} trashNote={trashNote}/>
         )) 
       
         :<div className="Notes-no-notes-display">

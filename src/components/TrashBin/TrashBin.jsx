@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Note } from "../Note/Note";
-import { trashBins, trash } from "../../utils/Api";
+import { trashBins, trash, deleteForever } from "../../utils/Api";
 import { Note as NoteIcon } from '@mui/icons-material';
 import './TrashBin.scss'
 
@@ -21,13 +21,20 @@ setTrashBin((prevNotes) => {
   });
 }
 
+let deletePermantly=async(data)=>{
+  console.log(await deleteForever(data._id));
+  setTrashBin((prevNotes) => {
+          return prevNotes.filter((note) => note._id !== data._id);
+    });
+  }
+
 return(
     <>
       {
        trashBin.length
 
         ?trashBin.map((note) => (
-        <Note key={note._id} data={note} unTrash={unTrash}/>
+        <Note key={note._id} data={note} unTrash={unTrash} deletePermantly={deletePermantly}/>
         )) 
       
         :<div className="Notes-no-notes-display">

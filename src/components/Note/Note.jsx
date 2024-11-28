@@ -2,9 +2,10 @@ import "./Note.scss";
 import React, { useState, useRef, useEffect } from "react";
 import { Card, CardContent, IconButton, TextField, CardActions } from "@mui/material";
 import { ArchiveOutlined , Delete , AddAlertOutlined, InsertPhotoOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined } from '@mui/icons-material';
-import RestoreIcon from '@mui/icons-material/Restore';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import UnarchiveOutlinedIcon from '@mui/icons-material/UnarchiveOutlined';
 
-export const Note = ({ data , archivenote, unArchive, trashNote, unTrash}) => {
+export const Note = ({ data , archivenote, unArchive, trashNote, unTrash, deletePermantly}) => {
   const { title: initialTitle, description: initialDescription } = data;
 
   const [note, setNote] = useState({
@@ -53,41 +54,41 @@ export const Note = ({ data , archivenote, unArchive, trashNote, unTrash}) => {
     {isHovered && (
       <CardActions className="note-actions">
         
-        <IconButton onClick={() => console.log("Bell Alert Icon")} >
+        {!unTrash&&<IconButton onClick={() => console.log("Bell Alert Icon")} >
           <AddAlertOutlined />
-        </IconButton>
+        </IconButton>}
 
-        <IconButton onClick={() => console.log("Person add")} >
+        {!unTrash&&<IconButton onClick={() => console.log("Person add")} >
           <PersonAddAlt1Outlined />
-        </IconButton>
+        </IconButton>}
 
-        <IconButton onClick={() => console.log("PaletteOutlined")} >
+        {!unTrash&&<IconButton onClick={() => console.log("PaletteOutlined")} >
           <PaletteOutlined />
-        </IconButton>
+        </IconButton>}
 
-        <IconButton onClick={() => console.log("InsertPhotoOutlined")} >
+        {!unTrash&&<IconButton onClick={() => console.log("InsertPhotoOutlined")} >
           <InsertPhotoOutlined />
-        </IconButton>
+        </IconButton>}
 
         {archivenote&&<IconButton onClick={() => {archivenote(data)}} >
           <ArchiveOutlined />
         </IconButton>}
   
-        {unArchive&&<IconButton style={{ transform: 'rotate(180deg)' }} onClick={() => {unArchive(data)}} >
-          <ArchiveOutlined />
+        {unArchive&&<IconButton onClick={() => {unArchive(data)}} >
+          <UnarchiveOutlinedIcon />
         </IconButton>}
-
-        {trashNote&&<IconButton onClick={() => {trashNote(data)}}>
+        
+        {<IconButton onClick={unTrash ? () => {unTrash(data)}:() => {trashNote(data)}}>
           <Delete />
         </IconButton>}
 
-        {unTrash&&<IconButton onClick={() => {unTrash(data)}}>
-          <RestoreIcon/>
+        {unTrash&&<IconButton onClick={() => {deletePermantly(data)}}>
+          <DeleteForeverOutlinedIcon/>
         </IconButton>}
 
-        <IconButton style={{padding:"0px"}} onClick={() => console.log("MoreVertOutlined")} >
+        {!unTrash&&<IconButton style={{padding:"0px"}} onClick={() => console.log("MoreVertOutlined")} >
           <MoreVertOutlined className="custom-icon" />
-        </IconButton>
+        </IconButton>}
       </CardActions>
     )}
   </Card>

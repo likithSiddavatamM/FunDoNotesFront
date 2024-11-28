@@ -118,3 +118,32 @@ export const trash = async(id)=>{
     console.error("Error trashing note:", error);
   }    
 }
+
+export const deleteForever = async(id)=>{
+  try {
+    const response = await axios.delete(`http://localhost:3000/api/v1/fundonotes/usernotes/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    console.log(response,"---------------------------")
+    return response
+   } catch (error) {
+    console.error("Error deletePermantely note:", error);
+  }    
+}
+
+export const updateNote = async (id,data) => {
+  try {
+     const response = await axios.post(`http://localhost:3000/api/v1/fundonotes/usernotes/${id}`, {data},{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`, 
+      },
+    });
+    return response
+  } catch (error) {
+    console.error("There was an error updating the notes:", error);
+  }
+}
