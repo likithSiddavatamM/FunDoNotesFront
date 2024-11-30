@@ -37,7 +37,7 @@ export default ({ drawerState, handleNavigate ,setDrawerState}) => {
           onMouseLeave={() => {setDrawerState(false); setHoveredItem(null)}}
         >
           <ListItemIcon style={{color:hoveredItem === item.key?"black":"gray",}}>{item.icon}</ListItemIcon>
-          {drawerState && <ListItemText style={{cursor:"default"}} primary={item.text} />}
+          {drawerState && <ListItemText style={{cursor:"pointer"}} primary={item.text} />}
         </ListItem>
       ))}
     </>

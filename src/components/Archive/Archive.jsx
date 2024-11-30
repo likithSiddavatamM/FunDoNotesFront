@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Note } from "../Note/Note";
-import { archives, archive } from "../../utils/Api";
+import { archives, archive, updateNote } from "../../utils/Api";
 import { Note as NoteIcon } from '@mui/icons-material';
 import { trash } from "../../utils/Api";
 import './Archive.scss'
@@ -23,11 +23,20 @@ setArchiveData((prevNotes) => {
 }
 
 let trashNote = async (data) => {
-  await trash(data._id);
+    await trash(data._id);
+    setArchiveData((prevNotes) => {
+      return prevNotes.filter((note) => note._id !== data._id);
+  }); 
+};
+
+
+let handleColor = async(newColor, id) => {
+  await updateNote(id, {color:newColor});
   setArchiveData((prevNotes) => {
-    return prevNotes.filter((note) => note._id !== data._id);
-});
-  
+    return prevNotes.map((note) => 
+      note._id === id ? { ...note, color: newColor } : note
+    );
+  });
 };
 
 return(
@@ -36,7 +45,7 @@ return(
        archiveData.length
 
         ?archiveData.map((note) => (
-        <Note key={note._id} data={note} unArchive={unArchive} trashNote={trashNote}/>
+        <Note key={note._id} data={note} unArchive={unArchive} handleColor={handleColor} trashNote={trashNote}/>
         )) 
       
         :<div className="Notes-no-notes-display">

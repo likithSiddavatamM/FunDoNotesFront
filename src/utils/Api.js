@@ -135,9 +135,10 @@ export const deleteForever = async(id)=>{
   }    
 }
 
-export const updateNote = async (id,data) => {
+export const updateNote = async (id, data) => {
   try {
-     const response = await axios.post(`http://localhost:3000/api/v1/fundonotes/usernotes/${id}`, {data},{
+    console.log(id , "*********", data)
+     const response = await axios.put(`http://localhost:3000/api/v1/fundonotes/usernotes/${id}`, data ,{
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`, 
       },

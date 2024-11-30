@@ -1,25 +1,24 @@
 import { useState, useRef, useEffect } from "react";
-import { IconButton, TextField } from "@mui/material";
-import { ArchiveOutlined, Add, Close } from "@mui/icons-material";
-import { BrushOutlined, CheckBoxOutlined, InsertPhotoOutlined, Delete , AddAlertOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined} from '@mui/icons-material';
+import { IconButton, Popover, TextField } from "@mui/material";
+import { ArchiveOutlined, Close } from "@mui/icons-material";
+import { BrushOutlined, CheckBoxOutlined, InsertPhotoOutlined, AddAlertOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined} from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
-import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
-
+import ColorPalette from "../ColorPalette/ColorPalette";
 
 export default function TakeNote({ onAddNote }) {
   const [takeNoteState, setTakeNoteState] = useState(false);
-  const [note, setNote] = useState({ title: "", description: "" });
+  const [note, setNote] = useState({ title: "", description: "" , color: ""});
   const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
   const [isTitleFocused, setIsTitleFocused] = useState(false);
-
+  const [colorAnchorEl, setColorAnchorEl] = useState(null);
   const noteRef = useRef(null);
   
   const handleAdd = () => {
     if (note.title || note.description) {
       onAddNote(note);
       setTakeNoteState(false);
-      setNote({ title: "", description: "" });
+      setNote({ title: "", description: "", color:"" });
     }
   };
 
@@ -40,11 +39,31 @@ export default function TakeNote({ onAddNote }) {
     setIsDescriptionFocused(false);
   };
 
-  useEffect(() => {
+
+
+
+  let handlePalatteColor=(newColor)=>{
+    setNote((prev)=>({...prev,color:newColor}))
+  }
+  
+
+  const handleColorClick = (event) => {
+    console.log(event,"......", event.currentTarget)
+    setColorAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseColorPalette = () => {
+    setColorAnchorEl(null);
+  };
+
+  const isColorPaletteOpen = Boolean(colorAnchorEl);
+
+  useEffect(() => { 
     const handleClickOutside = (event) => {
       if (noteRef.current && !noteRef.current.contains(event.target)) {
+        handleAdd()
+        setNote({ title: "", description: "", color: "" });
         setTakeNoteState(false);
-        setNote({ title: "", description: "" });
       }
     };
 
@@ -53,7 +72,7 @@ export default function TakeNote({ onAddNote }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }/*, []*/);
 
   return (
     <span
@@ -67,6 +86,7 @@ export default function TakeNote({ onAddNote }) {
         marginBottom: "1em",
         border: takeNoteState ? "1px solid rgba(100, 100, 100, 0.3)" : "none",
         borderRadius: "2%",
+        backgroundColor: note.color?`#${note.color}`:"white",
         boxShadow: takeNoteState
         ? "0px 6px 16px rgba(0, 0, 0, 0.2)" : "none",
       }}
@@ -153,9 +173,28 @@ export default function TakeNote({ onAddNote }) {
                 <PersonAddAlt1Outlined className="icon-button" />
               </IconButton>
 
-              <IconButton onClick={() => console.log("PaletteOutlined")} >
-                <PaletteOutlined className="icon-button" />
+              {/* <> */}
+              <IconButton onClick={handleColorClick}>
+                <PaletteOutlined className="icon-button"/>
               </IconButton>
+              <Popover
+                open={isColorPaletteOpen}
+                anchorEl={colorAnchorEl}
+                onClose={handleCloseColorPalette}
+                container={noteRef.current}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                onMouseLeave={handleCloseColorPalette}
+              >
+                <ColorPalette onClick={()=>console.log("colorpalatte")} handlePalatteColor={handlePalatteColor} /*handleCloseColorPalette={handleCloseColorPalette}*/ />
+              </Popover>
+            {/* </> */}
 
               <IconButton onClick={() => console.log("InsertPhotoOutlined")} >
                 <InsertPhotoOutlined className="icon-button" />
@@ -192,7 +231,7 @@ export default function TakeNote({ onAddNote }) {
                 onClick={() => {
                   handleAdd();
                   setTakeNoteState(false);
-                  setNote({ title: "", description: "" });
+                  // setNote({ title: "", description: "" });
                 }}>
                 <Close />
               </IconButton>

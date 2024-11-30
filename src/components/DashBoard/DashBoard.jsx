@@ -1,16 +1,11 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import { Drawer, IconButton, Menu, MenuItem } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useRef, useEffect } from "react";
-import downloadKeep from "../../assets/downloadKeep.png"
+import { Outlet, useNavigate } from "react-router-dom";
 import "./DashBoard.scss";
+import { Drawer, IconButton, Menu, MenuItem, TextField, InputAdornment } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import downloadKeep from "../../assets/downloadKeep.png"
 import DrawerContent from "../DrawerContent/DrawerContent";
-import { TextField, InputAdornment } from "@mui/material";
-import { AccountCircle, Search } from "@mui/icons-material";
-import RefreshIcon from '@mui/icons-material/Refresh';
-import DnsOutlinedIcon from '@mui/icons-material/DnsOutlined';
-import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
-import AppsIcon from '@mui/icons-material/Apps';
+import { AccountCircle, Search, Refresh, DnsOutlined, SettingsSharp, Apps } from "@mui/icons-material";
 
 export function DashBoard() {
   const [drawerState, setDrawerState] = useState(false);
@@ -55,7 +50,7 @@ export function DashBoard() {
   return (
     <>
       <header className="button-dashboard">
-        <div style={{ display: "flex", justifyContent: "space-evenly", gap: "2em", paddingTop: "5px", width:"59%"}}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: "2em", paddingTop: "5px", width:"50%"}}>
           <div style={{ display: "flex",}}>
             <IconButton
               edge="start"
@@ -104,18 +99,18 @@ export function DashBoard() {
 
         </div>
         <div style={{display:"flex",}}>
-          <div style={{display:"flex", gap:"10px"}}>
+          <div style={{display:"flex", gap:"10px", alignItems:"center"}}>
               <IconButton >
-              <RefreshIcon style={{fontSize:"1.2em"}}/>
+              <Refresh style={{fontSize:"1.2em"}}/>
               </IconButton>
               <IconButton >
-              <DnsOutlinedIcon style={{fontSize:"1.1em"}}/>
+              <DnsOutlined style={{fontSize:"1.1em"}}/>
               </IconButton>  
               <IconButton >
-              <SettingsSharpIcon style={{fontSize:"1.1em"}}/>
+              <SettingsSharp style={{fontSize:"1.1em"}}/>
               </IconButton>      
               <IconButton >
-              <AppsIcon style={{fontSize:"1.1em"}}/>
+              <Apps style={{fontSize:"1.1em"}}/>
               </IconButton>       
                <IconButton
                 onClick={handleMenu}
@@ -137,11 +132,16 @@ export function DashBoard() {
                 }}
                 open={Boolean(log)}
                 onClose={handleClose}
+                PaperProps={{
+                  style: {
+                    marginTop: '4em',
+                    marginLeft:"10px"
+                  },
+                }}
               >
-                <MenuItem onClick={()=>{handleClose("logout")}}>Logout</MenuItem>
+                <MenuItem onClick={() => handleClose("logout")}>Logout</MenuItem>
               </Menu>
             </div>
-
           </div>
       </header>
 

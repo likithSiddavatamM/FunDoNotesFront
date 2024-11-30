@@ -1,24 +1,26 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Signup from "./components/SignUp/SignUp.js"
-import Signin from "./components/SignIn/SignIn.js"
-import {Notes} from "./components/Notes/Notes.jsx";
-import { DashBoard } from "./components/DashBoard/DashBoard.jsx";
-import Archive from "./components/Archive/Archive.jsx";
-import Trash from "./components/TrashBin/TrashBin.jsx";
+import Signup from "../components/SignUp/SignUp.js"
+import Signin from "../components/SignIn/SignIn.js"
+import { DashBoard } from "../components/DashBoard/DashBoard.jsx";
+import Archive from "../components/Archive/Archive.jsx";
+import Trash from "../components/TrashBin/TrashBin.jsx";
+import { Notes } from "../components/Notes/Notes.jsx";
+import { AuthRoute } from "./AuthRoute.js";
+import { ProtectedRoute } from "./ProtectedRoute.js";
 
 function Routing(){
     const route = createBrowserRouter([
         {
             path: '',
-            element: <Signin/>
+            element: <AuthRoute><Signin/></AuthRoute>
         },
         {
             path: "signup",
-            element: <Signup/>
+            element: <AuthRoute><Signup/></AuthRoute>
         },
         {
             path: "dashboard",
-            element: <DashBoard/>,
+            element: <ProtectedRoute><DashBoard/></ProtectedRoute> ,
                 children:[{
                     path: 'notes',
                     element: <Notes/>

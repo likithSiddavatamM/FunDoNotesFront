@@ -1,6 +1,6 @@
 .note-card {
   transition: all 0.3s ease;
-  max-width: 330px;
+  width: 330px;
   margin: 0.88em;
   position: relative;
   display: flex;
@@ -50,7 +50,7 @@
     cursor: default;
     & .MuiOutlinedInput-root {
       cursor: default;
-      pointer-events: none;
+      // pointer-events: none;
       border: none;
       
       & fieldset {
