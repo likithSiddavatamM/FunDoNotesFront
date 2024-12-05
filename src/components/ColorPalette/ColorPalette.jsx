@@ -7,7 +7,7 @@ const colors = [
   "d3bfdb", "f6e2dd", "e9e3d4", "efeff1"
 ];
 
-const ColorPalette = ({handlePalatteColor, handleCloseColorPalette}) => {
+const ColorPalette = ({actionClick, handleCloseColorPalette}) => {
 
   return (
     <span className="container" >
@@ -15,7 +15,7 @@ const ColorPalette = ({handlePalatteColor, handleCloseColorPalette}) => {
         <span 
           key={index} 
           className={`note note--${color}`}
-          onClick={()=>{console.log("colorpalatte is in"); handlePalatteColor(color);}}
+          onClick={()=>{actionClick("color",color); handleCloseColorPalette()}}
         >
         </span>
       ))}
@@ -24,3 +24,4 @@ const ColorPalette = ({handlePalatteColor, handleCloseColorPalette}) => {
 };
 
 export default ColorPalette;
+

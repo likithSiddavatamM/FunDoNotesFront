@@ -1,56 +1,72 @@
 .Notes-no-notes-display {
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-    color: #888;
-    background-color: #f4f4f9;
-    padding: 50px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
-    position: relative;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 400px;
-    width: 100%;
-    
-  }
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: #888;
+  background-color: #f4f4f9;
+  padding: 50px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+  position: relative;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 400px;
+  width: 100%;
   
-  .Notes-no-notes-display p:nth-child(3) {
-    color: rgb(180, 142, 128);
-    font-size: 16px;
-  }
+}
 
-  .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .popup-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-  }
-  
-  .note-title-input,
-  .note-content-input {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+.Notes-no-notes-display p:nth-child(3) {
+  color: rgb(180, 142, 128);
+  font-size: 16px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.note-title-input,
+.note-content-input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.centered-span {
+  width: 100%;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: start;
+  top: 0;
+}
+
+.note-icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+  color: #888;
+}
+

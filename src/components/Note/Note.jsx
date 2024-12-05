@@ -5,12 +5,14 @@ import { ArchiveOutlined , Delete , AddAlertOutlined, InsertPhotoOutlined, Palet
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import UnarchiveOutlinedIcon from '@mui/icons-material/UnarchiveOutlined';
 import ColorPalette from "../ColorPalette/ColorPalette";
+import { trash ,updateNote, archive, deleteForever} from "../../utils/Api";
 
-export const Note = ({ data , handleColor, archivenote, unArchive, trashNote, unTrash, deletePermantly, handleNoteClick, closePopup, expandedNote}) => {
-  const { title: initialTitle, description: initialDescription } = data;
+export const Note = ({ data, handleNoteClick, closePopup, expandedNote, handleAction, status}) => {
+  const { title: initialTitle, description: initialDescription, color: initialColor} = data;
   const [note, setNote] = useState({
     title: initialTitle,
     description: initialDescription,
+    color: initialColor
   });
   const [isHovered, setIsHovered] = useState(false);
   const [colorAnchorEl, setColorAnchorEl] = useState(null);
@@ -22,14 +24,9 @@ export const Note = ({ data , handleColor, archivenote, unArchive, trashNote, un
     }
   };
 
-
   useEffect(() => {
     handleResize();
   }, [note.description]);
-
-  let handlePalatteColor=(newColor)=>{
-    handleColor(newColor, data._id)
-  }
 
   const handleColorClick = (event) => {
     setColorAnchorEl(event.currentTarget);
@@ -39,18 +36,44 @@ export const Note = ({ data , handleColor, archivenote, unArchive, trashNote, un
     setColorAnchorEl(null);
   };
 
+  let actionClick=async(action, newData)=>{
+    switch (action) {
+      case "color":
+        setIsHovered(false)
+        setNote((prev)=>({...prev,color:newData}))
+        await updateNote(data._id, {color:newData});
+        handleAction(action, [data._id, newData])
+        break;
+
+      case "archive" :
+      case "unArchive":  
+        await archive(newData._id);
+        handleAction(action, newData._id)
+        break;
+
+      case "trash" :
+      case "unTrash" :
+        await trash(newData._id);
+        handleAction(action, newData._id)
+        break;
+
+      case "deletePermantly":
+        await deleteForever(newData._id)
+        handleAction(action, newData._id) 
+    }
+  }
+
   const isColorPaletteOpen = Boolean(colorAnchorEl);
 
   return (
-    <Card className="note-card"  style={{backgroundColor: `#${data.color}`}} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-    <CardContent  onClick={handleNoteClick&&(() => {handleNoteClick(data);console.log(data)})}>
+    <Card className="note-card"  style={{backgroundColor: note.color?`#${note.color}` : `#${data.color}`}} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <CardContent  onClick={handleNoteClick&&(() => {handleNoteClick(data)})}>
       {/* Title */}
       <TextField
         fullWidth
         multiline
         value={note.title}
         variant="outlined"
-        // onClick={(e) => e.stopPropagation()}
         onChange={(e) => setNote((prevNote) => ({ ...prevNote, title: e.target.value }))}
         className="note-title"
         style={{ pointerEvents: expandedNote?"auto":'none' }}
@@ -68,26 +91,25 @@ export const Note = ({ data , handleColor, archivenote, unArchive, trashNote, un
         onInput={handleResize}
         onChange={(e) => setNote((prevNote) => ({ ...prevNote, description: e.target.value }))}
         style={{ pointerEvents: expandedNote?"auto":'none' }}
-        // aria-readonly
       />
     </CardContent>
   
     {isHovered && (
       <CardActions className="note-actions">
         
-        {!unTrash&&<IconButton onClick={() => console.log("alert")} >
+        {status.includes("alert")&&<IconButton>
           <AddAlertOutlined />
         </IconButton>}
 
-        {!unTrash&&<IconButton onClick={() => console.log("Person add")} >
+        {status.includes("personAdd")&&<IconButton>
           <PersonAddAlt1Outlined />
         </IconButton>}
 
-        {!unTrash&&<IconButton onClick={() => console.log("InsertPhotoOutlined")} >
+        {status.includes("imageAdd")&&<IconButton>
           <InsertPhotoOutlined />
         </IconButton>}
 
-        {!unTrash && (
+        {status.includes("colorPalette") && (
             <>
               <IconButton onClick={handleColorClick}>
                 <PaletteOutlined />
@@ -106,28 +128,28 @@ export const Note = ({ data , handleColor, archivenote, unArchive, trashNote, un
                 }}
                 onMouseLeave={handleCloseColorPalette}
               >
-                <ColorPalette handlePalatteColor={handlePalatteColor} handleCloseColorPalette={handleCloseColorPalette}/>
+                <ColorPalette actionClick={actionClick} handleCloseColorPalette={handleCloseColorPalette}/>
               </Popover>
             </>
           )}
 
-        {archivenote&&<IconButton onClick={() => {archivenote(data)}} >
+        {status.includes("archive")&&<IconButton onClick={() => {actionClick("archive", data)}} >
           <ArchiveOutlined />
         </IconButton>}
   
-        {unArchive&&<IconButton onClick={() => {unArchive(data)}} >
+        {status.includes("unArchive")&&<IconButton onClick={() => {actionClick("unArchive", data)}} >
           <UnarchiveOutlinedIcon />
         </IconButton>}
         
-        {<IconButton onClick={unTrash ? () => {unTrash(data)}:() => {trashNote(data)}}>
+        {<IconButton onClick={status.includes("unTrash") ? () => {actionClick("unTrash", data)}:() => {actionClick("trash", data)}}>
           <Delete />
         </IconButton>}
 
-        {unTrash&&<IconButton onClick={() => {deletePermantly(data)}}>
+        {status.includes("deletePermantly")&&<IconButton onClick={() => {actionClick("deletePermantly",data)}}>
           <DeleteForeverOutlinedIcon/>
         </IconButton>}
 
-        {!unTrash&&<IconButton style={{padding:"0px"}} onClick={() => console.log("MoreVertOutlined")} >
+        {status.includes("moreVert")&&<IconButton style={{padding:"0px"}}>
           <MoreVertOutlined className="custom-icon" />
         </IconButton>}
 
@@ -140,8 +162,6 @@ export const Note = ({ data , handleColor, archivenote, unArchive, trashNote, un
         </IconButton>}
       </CardActions>
     )}
-
   </Card>
-  
   );
 };

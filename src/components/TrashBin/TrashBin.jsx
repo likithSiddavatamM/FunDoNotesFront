@@ -1,55 +1,33 @@
 import { useEffect, useState } from "react";
 import { Note } from "../Note/Note";
-import { trashBins, trash, deleteForever } from "../../utils/Api";
-import { Note as NoteIcon } from '@mui/icons-material';
+import { trashBins } from "../../utils/Api";
 import './TrashBin.scss'
+import { NoNote } from "../NoNote/NoNote";
 
 let Trash=()=>{
-let [trashBin, setTrashBin] = useState([]);
+  let [trashBin, setTrashBin] = useState([]);
+  const status = ["unTrash", "deletePermantly"]
+  useEffect(()=>{
+  (async()=>{
+      let response = await trashBins();
+      if(response.status==200)
+          setTrashBin(response.data.data);
+  })()},[])
 
-useEffect(()=>{
-(async()=>{
-    let response = await trashBins();
-    if(response.status==200)
-        setTrashBin(response.data.data);
-})()},[])
-
-let unTrash=async(data)=>{
-await trash(data._id);
-setTrashBin((prevNotes) => {
-        return prevNotes.filter((note) => note._id !== data._id);
-  });
-}
-
-let deletePermantly=async(data)=>{
-  console.log(await deleteForever(data._id));
-  setTrashBin((prevNotes) => {
-          return prevNotes.filter((note) => note._id !== data._id);
+  let handleAction=async(action, actionData)=>{
+    setTrashBin((prevNotes) => {
+      return prevNotes.filter((note) => note._id !== actionData);
     });
   }
 
-return(
+  return(
     <>
       {
        trashBin.length
-
         ?trashBin.map((note) => (
-        <Note key={note._id} data={note} unTrash={unTrash} deletePermantly={deletePermantly}/>
+        <Note key={note._id} data={note} handleAction={handleAction} status={status}/>
         )) 
-      
-        :<div className="Notes-no-notes-display">
-          <NoteIcon
-            style={{
-              fontSize: "50px",
-              marginBottom: "20px",
-              color: "#888",
-            }}
-            />
-          <p>No notes to display</p>
-          <p>
-            Add some notes to display
-          </p>
-        </div>
+        :<NoNote/>
       }
     </>
   )

@@ -2,12 +2,12 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 5em;
+    height: 4.7em;
     position: fixed;
     background-color: white;
     z-index: 100;
     box-shadow: 0px 0px 4px 1px rgba(219, 222, 222, 0.83);
-    gap:31%;
+    gap:23%;
     justify-content: space-around;
 }
 .button-dashboard-takenote{
@@ -27,13 +27,98 @@
     position: relative;
     color: #6f6c67f4;
     margin: 0px;
-    padding-top: 12px;
+    font-size: 1.7em;
+    // padding-top: 12px;
+    padding-left: 10px;
     text-align: center;
+    font-weight: 450;
 
 }
 
 .drawerButton{
     position: fixed;
     left:1%;
-    padding: 31px;
+    padding: 10px !important;
+    margin: 0px !important;
 }
+
+
+.dashboard-left {
+    display: flex;
+    gap: 3.1em;
+    width: 60%;
+    align-items: center;
+
+  }
+
+  .dashboard-flex-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .user-icon {
+    padding: 10px;
+    width: 2em;
+    height: 2.7em;
+  }
+
+  .search-container {
+    // padding: 7px;
+    width: 43em;
+  }
+
+  .search-text-field {
+    & .MuiOutlinedInput-root {
+      border-radius: 10px;
+      background: #f1f3f4;
+      border: none;
+      font-size: 1.3em;
+    }
+  }
+  
+  .search-icon .MuiSvgIcon-root {
+    font-size: 1.3em;
+  }
+  
+  .outer-flex {
+    display: flex;
+  }
+  
+  .inner-flex {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .main-container {
+    display: flex;
+    height: 100%;
+    position: relative;
+    top: 5.5em;
+  }
+  
+  .drawer-container {
+    width: 4em;
+    transition: width 0.3s ease;
+  }
+  
+  .drawer-container.expanded {
+    width: 20%;
+  }
+  
+  .drawer-content-container {
+    position: fixed;
+    width: 4em;
+    transition: width 0.3s ease;
+  }
+  
+  .drawer-content-container.expanded {
+    width: 13%;
+  }
+  
+  .outlet-container {
+    width: 100%;
+    transition: margin-left 0.3s ease;
+    display: flex;
+    flex-wrap: wrap;
+  }  

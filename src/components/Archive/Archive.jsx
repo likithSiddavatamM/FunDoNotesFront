@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Note } from "../Note/Note";
-import { archives, archive, updateNote } from "../../utils/Api";
-import { Note as NoteIcon } from '@mui/icons-material';
-import { trash } from "../../utils/Api";
+import { archives } from "../../utils/Api";
 import './Archive.scss'
+import { NoNote } from "../NoNote/NoNote";
 
 let Archive=()=>{
 let [archiveData, setArchiveData] = useState([]);
-
+const status = ["unArchive", "unTrash", "alert", "personAdd", "imageAdd", "colorPalette","moreVert"];
 useEffect(()=>{
 (async()=>{
     let response = await archives();
@@ -15,29 +14,24 @@ useEffect(()=>{
         setArchiveData(response.data.data);
 })()},[])
 
-let unArchive=async(data)=>{
-await archive(data._id);
-setArchiveData((prevNotes) => {
-        return prevNotes.filter((note) => note._id !== data._id);
-  });
+const handleAction=async(action, actionData)=>{
+  switch (action) {
+    case "color" :
+      setArchiveData((prevNotes) => {
+        return prevNotes.map((note) => 
+          {return note._id == actionData[0] ? { ...note, color: actionData[1] } : note}
+        );
+      });
+      break;
+
+    case "unArchive":
+    case "unTrash":
+      setArchiveData((prevNotes) => {
+        return prevNotes.filter((note) => note._id != actionData);
+      });
+
+  }
 }
-
-let trashNote = async (data) => {
-    await trash(data._id);
-    setArchiveData((prevNotes) => {
-      return prevNotes.filter((note) => note._id !== data._id);
-  }); 
-};
-
-
-let handleColor = async(newColor, id) => {
-  await updateNote(id, {color:newColor});
-  setArchiveData((prevNotes) => {
-    return prevNotes.map((note) => 
-      note._id === id ? { ...note, color: newColor } : note
-    );
-  });
-};
 
 return(
     <>
@@ -45,22 +39,10 @@ return(
        archiveData.length
 
         ?archiveData.map((note) => (
-        <Note key={note._id} data={note} unArchive={unArchive} handleColor={handleColor} trashNote={trashNote}/>
+        <Note key={note._id} data={note} handleAction={handleAction} status={status}/>
         )) 
       
-        :<div className="Notes-no-notes-display">
-          <NoteIcon
-            style={{
-              fontSize: "50px",
-              marginBottom: "20px",
-              color: "#888",
-            }}
-            />
-          <p>No notes to display</p>
-          <p>
-            Add some notes to display
-          </p>
-        </div>
+        : <NoNote/>
       }
     </>
   )

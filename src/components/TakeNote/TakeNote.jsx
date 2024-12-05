@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { IconButton, Popover, TextField } from "@mui/material";
-import { ArchiveOutlined, Close } from "@mui/icons-material";
-import { BrushOutlined, CheckBoxOutlined, InsertPhotoOutlined, AddAlertOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined} from '@mui/icons-material';
+import { IconButton, Popover, TextField, Button } from "@mui/material";
+import { BrushOutlined, CheckBoxOutlined, InsertPhotoOutlined, AddAlertOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined, ArchiveOutlined, UndoOutlined, RedoOutlined } from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
-import { Button } from "@mui/material";
 import ColorPalette from "../ColorPalette/ColorPalette";
+import { createNote } from "../../utils/Api";
 
-export default function TakeNote({ onAddNote }) {
+export default function TakeNote({ handleAction }) {
   const [takeNoteState, setTakeNoteState] = useState(false);
   const [note, setNote] = useState({ title: "", description: "" , color: ""});
   const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
@@ -14,11 +13,12 @@ export default function TakeNote({ onAddNote }) {
   const [colorAnchorEl, setColorAnchorEl] = useState(null);
   const noteRef = useRef(null);
   
-  const handleAdd = () => {
+  const handleAdd = async() => {
     if (note.title || note.description) {
-      onAddNote(note);
-      setTakeNoteState(false);
+      let createNoteResponse = await createNote(note)
+      handleAction("add", createNoteResponse.data.data);
       setNote({ title: "", description: "", color:"" });
+      setTakeNoteState(false);
     }
   };
 
@@ -39,16 +39,12 @@ export default function TakeNote({ onAddNote }) {
     setIsDescriptionFocused(false);
   };
 
-
-
-
-  let handlePalatteColor=(newColor)=>{
+  let handlePalatteColor=(action, newColor)=>{
     setNote((prev)=>({...prev,color:newColor}))
   }
   
 
   const handleColorClick = (event) => {
-    console.log(event,"......", event.currentTarget)
     setColorAnchorEl(event.currentTarget);
   };
 
@@ -61,7 +57,7 @@ export default function TakeNote({ onAddNote }) {
   useEffect(() => { 
     const handleClickOutside = (event) => {
       if (noteRef.current && !noteRef.current.contains(event.target)) {
-        handleAdd()
+        handleAdd();
         setNote({ title: "", description: "", color: "" });
         setTakeNoteState(false);
       }
@@ -72,14 +68,14 @@ export default function TakeNote({ onAddNote }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }/*, []*/);
+  }, [note]);
 
   return (
     <span
       ref={noteRef}
       className={`takeNote ${takeNoteState ? "active" : ""}`}
       style={{
-        width: "33em",
+        width: "43em",
         display: "flex",
         flexDirection: "column",
         marginTop: "2em",
@@ -117,13 +113,13 @@ export default function TakeNote({ onAddNote }) {
         InputProps={{
           endAdornment: !takeNoteState?(
             <InputAdornment position="end">
-              <IconButton onClick={() => console.log("CheckBoxOutlined")}>
+              <IconButton>
                 <CheckBoxOutlined />
               </IconButton>
-              <IconButton onClick={() => console.log("BrushOutlined")}>
+              <IconButton>
                 <BrushOutlined />
               </IconButton>
-              <IconButton onClick={() => console.log("InsertPhotoOutlined")}>
+              <IconButton>
                 <InsertPhotoOutlined />
               </IconButton>
             </InputAdornment>
@@ -165,11 +161,11 @@ export default function TakeNote({ onAddNote }) {
                 marginTop: "18px",
                 gap:"15px"
               }}>
-              <IconButton onClick={() => console.log("Bell Alert Icon")} >
+              <IconButton>
                 <AddAlertOutlined className="icon-button" />
               </IconButton>
 
-              <IconButton onClick={() => console.log("Person add")} >
+              <IconButton>
                 <PersonAddAlt1Outlined className="icon-button" />
               </IconButton>
 
@@ -192,29 +188,36 @@ export default function TakeNote({ onAddNote }) {
                 }}
                 onMouseLeave={handleCloseColorPalette}
               >
-                <ColorPalette onClick={()=>console.log("colorpalatte")} handlePalatteColor={handlePalatteColor} /*handleCloseColorPalette={handleCloseColorPalette}*/ />
+                <ColorPalette actionClick={handlePalatteColor} handleCloseColorPalette={handleCloseColorPalette} />
               </Popover>
             {/* </> */}
 
-              <IconButton onClick={() => console.log("InsertPhotoOutlined")} >
+              <IconButton>
                 <InsertPhotoOutlined className="icon-button" />
               </IconButton>
 
               <IconButton aria-label="archive">
-                <ArchiveOutlined />
+                <ArchiveOutlined className="icon-button"/>
               </IconButton>
 
-              <IconButton onClick={() => console.log("MoreVertOutlined")} >
+              <IconButton>
                 <MoreVertOutlined className="icon-button" />
               </IconButton>
 
+              <IconButton>
+                <UndoOutlined className="icon-button" />
+              </IconButton>
+
+              <IconButton>
+                <RedoOutlined className="icon-button" />
+              </IconButton>
               <Button 
                 variant="outlined" 
                 color="primary" 
                 disabled={(note.title||note.description)?false:true}      
                 onClick={handleAdd}
                 style={{fontSize:"medium", borderRadius:"1em", color:(note.title||note.description)&&"rgba(0, 0, 0, 0.59)", border:"none"}}
-                >
+              >
               Add
               </Button>
             </span>
@@ -226,15 +229,25 @@ export default function TakeNote({ onAddNote }) {
                 marginTop: "18px",
                 gap:"11px"
               }}>
-              <IconButton
-                aria-label="close"
+              {/* <IconButton
+                // aria-label="close"
+                
+                }}> */}
+                {/* <Close /> */}
+              {/* </IconButton> */}
+
+              <Button
+                variant="outlined" 
+                color="primary"
                 onClick={() => {
-                  handleAdd();
-                  setTakeNoteState(false);
-                  // setNote({ title: "", description: "" });
-                }}>
-                <Close />
-              </IconButton>
+                handleAdd();
+                setTakeNoteState(false);
+                setNote({ title: "", description: "", color:"" });}}
+                style={{fontSize:"medium", borderRadius:"1em", color:"rgba(0, 0, 0, 0.59)", border:"none",textTransform: "none"}}
+              >
+                Close
+              </Button> 
+
             </span>
           </span>
         </>

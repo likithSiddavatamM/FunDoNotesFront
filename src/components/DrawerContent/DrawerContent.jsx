@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
-import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
-import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import { useLocation } from "react-router-dom";
+import { NotificationsOutlined, DeleteOutlineOutlined, ArchiveOutlined, LightbulbOutlined, ModeEditOutlined } from '@mui/icons-material';
 
 export default ({ drawerState, handleNavigate ,setDrawerState}) => {
   const [hoveredItem, setHoveredItem] = useState(null);
 
   const listItems = [
-    { key: "notes", text: "Notes", icon: <LightbulbOutlinedIcon style={{fontSize:"2em"}}/> },
-    { key: "reminder", text: "Reminder", icon: <NotificationsOutlinedIcon style={{fontSize:"2em"}}/> },
-    { key: "label", text: "Label", icon: <ModeEditOutlinedIcon style={{fontSize:"2em"}}/> },
-    { key: "trash", text: "Trash", icon: <DeleteOutlineOutlinedIcon style={{fontSize:"2em"}}/> },
-    { key: "archive", text: "Archive", icon: <ArchiveOutlinedIcon style={{fontSize:"2em"}}/> },
+    { key: "notes", text: "Notes", icon: <LightbulbOutlined style={{fontSize:"2em"}}/> },
+    { key: "reminder", text: "Reminder", icon: <NotificationsOutlined style={{fontSize:"2em"}}/> },
+    { key: "label", text: "Label", icon: <ModeEditOutlined style={{fontSize:"2em"}}/> },
+    { key: "trash", text: "Trash", icon: <DeleteOutlineOutlined style={{fontSize:"2em"}}/> },
+    { key: "archive", text: "Archive", icon: <ArchiveOutlined style={{fontSize:"2em"}}/> },
   ];
 
   return (
@@ -25,19 +22,27 @@ export default ({ drawerState, handleNavigate ,setDrawerState}) => {
           style={{
             borderRadius: drawerState ? "0px 19px 19px 0px" : "100px",
             width: drawerState ? "100%" : "3em",
-            backgroundColor: hoveredItem === item.key ? "rgb(254,239,195)" : "white",
-            transition: "background-color 0.3s ease",
+             backgroundColor : hoveredItem === item.key
+              ? !(useLocation().pathname === `/dashboard/${item.key}`)?"#f1f3f4":"rgb(254,239,195)"
+              : useLocation().pathname === `/dashboard/${item.key}`
+              ? "rgb(254,239,195)"
+              : "white",
             cursor:"default",
-            paddingLeft:"10px"
-
+            paddingLeft:"10px",
           }}
           button
-          onClick={() => handleNavigate(item.key)}
+          onClick={() => {handleNavigate(item.key); setHoveredItem(null)}}
           onMouseEnter={() => {setDrawerState(true); setHoveredItem(item.key)}}
           onMouseLeave={() => {setDrawerState(false); setHoveredItem(null)}}
         >
-          <ListItemIcon style={{color:hoveredItem === item.key?"black":"gray",}}>{item.icon}</ListItemIcon>
-          {drawerState && <ListItemText style={{cursor:"pointer"}} primary={item.text} />}
+          <ListItemIcon 
+            style={{
+              color:hoveredItem === item.key
+              ? "black" 
+              : useLocation().pathname === `/dashboard/${item.key}` ? "black" : "gray",}}>
+                {item.icon}
+          </ListItemIcon>
+            {drawerState && <ListItemText style={{cursor:"pointer"}} primary={item.text} />}
         </ListItem>
       ))}
     </>

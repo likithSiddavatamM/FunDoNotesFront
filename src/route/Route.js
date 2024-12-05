@@ -7,6 +7,8 @@ import Trash from "../components/TrashBin/TrashBin.jsx";
 import { Notes } from "../components/Notes/Notes.jsx";
 import { AuthRoute } from "./AuthRoute.js";
 import { ProtectedRoute } from "./ProtectedRoute.js";
+import ForgotPassword from "../components/ForgotPassword/ForgotPassword.jsx";
+import ResetPassword from "../components/ResetPassword/ResetPassword.jsx";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -34,7 +36,16 @@ function Routing(){
                     element: <Trash/>
                 }
             ]
-        }
+        },
+        {
+            path: "forgotpassword",
+            element: <ForgotPassword/>
+        },
+
+        {
+            path: "resetpassword/:token",
+            element: <ResetPassword/>
+        },
     ])
 
     return  <RouterProvider router={route}/>
