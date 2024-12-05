@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import "./DashBoard.scss";
 import { Drawer, IconButton, Menu, MenuItem, TextField, InputAdornment } from "@mui/material";
@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import downloadKeep from "../../assets/downloadKeep.png"
 import DrawerContent from "../DrawerContent/DrawerContent";
 import { Search, Refresh, DnsOutlined, SettingsSharp, Apps } from "@mui/icons-material";
+import { UpdateQueryContext } from "../Search/Search";
 
 export function DashBoard() {
   const [drawerState, setDrawerState] = useState(false);
@@ -14,22 +15,19 @@ export function DashBoard() {
   const searchRef = useRef(null);
   const [log, setLog] = useState(null);
   const [color, setColor] = useState(null);
+  const updateQuery=useContext(UpdateQueryContext)
+
   const handleMenu = (event) => {
     setLog(event.currentTarget);
   };
   const handleSearchChange = (event) => {
+    updateQuery(event.target.value)
     setSearchQuery(event.target.value);
   };
 
   const handleNavigate = (path) => {
     navigate(path);
     setDrawerState(false);
-  };
-
-  const handleClickOutside = (event) => {
-    if (searchRef.current && !searchRef.current.contains(event.target)) {
-      setSearchQuery("");
-    }
   };
 
   const handleClose = (logout) => {
@@ -39,13 +37,6 @@ export function DashBoard() {
     }
     setLog(null);
   };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
  useEffect(()=>{(() => {
   const letters = "0123456789ABCDEF";
@@ -114,8 +105,9 @@ export function DashBoard() {
               onClick={handleMenu}
               color="inherit"
             >
-              {/* <AccountCircle style={{fontSize:"1.5em"}}/> */}
-            <span style={{ width: "29px", height:"29px", background: color, color : "white", borderRadius: "25px", padding: "2px"}}>{localStorage.getItem('alphabet')}</span>
+            <span style={{ width: "29px", height:"29px", background: color, color : "white", borderRadius: "25px", padding: "2px"}}>
+              {localStorage.getItem('alphabet')}
+            </span>
       
             </IconButton>
             <Menu

@@ -1,10 +1,13 @@
 import './App.scss';
+import Search from './components/Search/Search';
 import Routing from './route/Route';
 
 export default function App() {
   return (
     <>
-    <Routing/>
+      <Search>
+        <Routing/>
+      </Search>
     </>
   );
 }
