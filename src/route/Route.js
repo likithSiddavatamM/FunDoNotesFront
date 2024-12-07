@@ -9,6 +9,7 @@ import { AuthRoute } from "./AuthRoute.js";
 import { ProtectedRoute } from "./ProtectedRoute.js";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "../components/ResetPassword/ResetPassword.jsx";
+import DrawerWithPopup from "../components/Label/Label.jsx";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -34,6 +35,10 @@ function Routing(){
                 {
                     path: 'trash',
                     element: <Trash/>
+                },
+                {
+                    path:"label",
+                    element:<DrawerWithPopup/>
                 }
             ]
         },
@@ -46,6 +51,7 @@ function Routing(){
             path: "resetpassword/:token",
             element: <ResetPassword/>
         },
+        
     ])
 
     return  <RouterProvider router={route}/>

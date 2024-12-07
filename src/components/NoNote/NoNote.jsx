@@ -1,5 +1,6 @@
 import React from "react";
 import { Note as NoteIcon } from '@mui/icons-material';
+import './NoNote.scss'
 
 export const NoNote = () => {
     return(

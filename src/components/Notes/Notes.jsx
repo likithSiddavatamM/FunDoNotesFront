@@ -83,7 +83,7 @@ export const Notes=()=>{
       }
       {expandedNote && (
         <div className="popup-overlay">
-          <Note data={expandedNote} closePopup={closePopup} expandedNote={expandedNote} status={status}/>
+          <Note data={expandedNote} closePopup={closePopup} handleNoteClick={handleNoteClick}expandedNote={expandedNote} status={status}/>
         </div>
       )}
     </>
