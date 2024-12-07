@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./ProtectedRoute.js";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "../components/ResetPassword/ResetPassword.jsx";
 import DrawerWithPopup from "../components/Label/Label.jsx";
+import PageNotFound from "../components/PageNotFound/PageNotFound.jsx";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -51,6 +52,10 @@ function Routing(){
             path: "resetpassword/:token",
             element: <ResetPassword/>
         },
+        {
+            path: "*",
+            element: <PageNotFound />
+        }
         
     ])
 
