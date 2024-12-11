@@ -3,7 +3,7 @@ import { IconButton, Popover, TextField, Button } from "@mui/material";
 import { BrushOutlined, CheckBoxOutlined, InsertPhotoOutlined, AddAlertOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined, ArchiveOutlined, UndoOutlined, RedoOutlined } from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
 import ColorPalette from "../ColorPalette/ColorPalette";
-import { createNote } from "../../utils/Api";
+import { archive, createNote } from "../../utils/Api";
 
 export default function TakeNote({ handleAction }) {
   const [takeNoteState, setTakeNoteState] = useState(false);
@@ -17,6 +17,15 @@ export default function TakeNote({ handleAction }) {
     if (note.title || note.description) {
       let createNoteResponse = await createNote(note)
       handleAction("add", createNoteResponse.data.data);
+      setNote({ title: "", description: "", color:"" });
+      setTakeNoteState(false);
+    }
+  };
+
+  const handleArchive = async() => {
+    if (note.title || note.description) {
+      let createNoteResponse = await createNote(note)
+      await archive(createNoteResponse.data.data._id);
       setNote({ title: "", description: "", color:"" });
       setTakeNoteState(false);
     }
@@ -197,7 +206,7 @@ export default function TakeNote({ handleAction }) {
               </IconButton>
 
               <IconButton aria-label="archive">
-                <ArchiveOutlined className="icon-button"/>
+                <ArchiveOutlined onClick={handleArchive} className="icon-button"/>
               </IconButton>
 
               <IconButton>
