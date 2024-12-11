@@ -64,8 +64,8 @@ export default ({ drawerState, handleNavigate, setDrawerState }) => {
     { key: "notes", text: "Notes", icon: <LightbulbOutlined style={{ fontSize: "2em" }} /> },
     { key: "reminder", text: "Reminder", icon: <NotificationsOutlined style={{ fontSize: "2em" }} /> },
     { key: "label", text: "Label", icon: <ModeEditOutlined style={{ fontSize: "2em" }} /> },
-    { key: "trash", text: "Trash", icon: <DeleteOutlineOutlined style={{ fontSize: "2em" }} /> },
     { key: "archive", text: "Archive", icon: <ArchiveOutlined style={{ fontSize: "2em" }} /> },
+    { key: "trash", text: "Trash", icon: <DeleteOutlineOutlined style={{ fontSize: "2em" }} /> },
   ]);
 
   const location = useLocation();
