@@ -242,7 +242,7 @@ export default function TakeNote({ handleAction, editNote,}) {
                 color="primary"
                 onClick={() => {
                 editNote?handleEditNote("update", note):handleTakeNoteAction("add");
-                setTakeNoteState(false);
+                // setTakeNoteState(false);
                 setNote({ title: "", description: "", color:"" });}}
                 style={{fontSize:"medium", borderRadius:"1em", color:"rgba(0, 0, 0, 0.59)", border:"none",textTransform: "none"}}
               >

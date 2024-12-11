@@ -1,7 +1,7 @@
 import "./Note.scss";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { Card, CardContent, IconButton, TextField, CardActions, Popover } from "@mui/material";
-import { ArchiveOutlined , Delete , AddAlertOutlined, InsertPhotoOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined, Close } from '@mui/icons-material';
+import { ArchiveOutlined , Delete , AddAlertOutlined, InsertPhotoOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined } from '@mui/icons-material';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import UnarchiveOutlinedIcon from '@mui/icons-material/UnarchiveOutlined';
 import ColorPalette from "../ColorPalette/ColorPalette";
@@ -50,7 +50,7 @@ export const Note = ({ data, handleAction, status}) => {
 
   return (
     <Card className="note-card"  style={{backgroundColor: `#${data.color}`}} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-    <CardContent  onClick={status.includes("noteClick") && (() => {handleAction("noteClick", data)})}>
+    <CardContent  onClick={ () => {status.includes("noteClick") && handleAction("noteClick", data)}}>
 
       <TextField
         fullWidth
