@@ -66,26 +66,41 @@ export const Notes=()=>{
     setExpandedNote(null);
   };
 
-  return(
-    <>
-      <span  className="centered-span" >
-      <TakeNote handleAction={handleAction}/>
-      </span>
-      {
-       notes.length
-
-        ?notes.map((note, index) => (
-          <Note key={note._id || index} data={note} expandedNote={expandedNote} handleNoteClick={handleNoteClick} handleAction={handleAction} status={status}/>
-        ))
-        
-      
-        :<NoNote/>
-      }
-      {expandedNote && (
-        <div className="popup-overlay">
-          <Note data={expandedNote} closePopup={closePopup} handleNoteClick={handleNoteClick}expandedNote={expandedNote} status={status}/>
-        </div>
-      )}
-    </>
-  )
+ return (
+  <>
+    {expandedNote ? (
+      <div className="popup-overlay">
+        <Note
+          key={expandedNote._id}
+          data={expandedNote}
+          closePopup={closePopup}
+          handleNoteClick={handleNoteClick}
+          handleAction={handleAction}
+          expandedNote={expandedNote}
+          status={status}
+        />
+      </div>
+    ) : (
+      <>
+        <span className="centered-span">
+          <TakeNote handleAction={handleAction} />
+        </span>
+        {notes.length ? (
+          notes.map((note, index) => (
+            <Note
+              key={note._id || index}
+              data={note}
+              expandedNote={expandedNote}
+              handleNoteClick={handleNoteClick}
+              handleAction={handleAction}
+              status={status}
+            />
+          ))
+        ) : (
+          <NoNote />
+        )}
+      </>
+    )}
+  </>
+);
 }
