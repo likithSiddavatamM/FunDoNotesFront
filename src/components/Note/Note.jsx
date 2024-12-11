@@ -7,26 +7,10 @@ import UnarchiveOutlinedIcon from '@mui/icons-material/UnarchiveOutlined';
 import ColorPalette from "../ColorPalette/ColorPalette";
 import { trash ,updateNote, archive, deleteForever} from "../../utils/Api";
 
-export const Note = ({ data, handleNoteClick, closePopup, expandedNote, handleAction, status}) => {
-  const { title: initialTitle, description: initialDescription, color: initialColor} = data;
-  const [note, setNote] = useState({
-    title: initialTitle,
-    description: initialDescription,
-    color: initialColor
-  });
+export const Note = ({ data, handleAction, status}) => {
+  
   const [isHovered, setIsHovered] = useState(false);
   const [colorAnchorEl, setColorAnchorEl] = useState(null);
-  const textAreaRef = useRef(null);
-  const handleResize = () => {
-    if (textAreaRef.current) {
-      textAreaRef.current.style.height = "auto";
-      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-    }
-  };
-
-  useEffect(() => {
-    handleResize();
-  }, [note.description]);
 
   const handleColorClick = (event) => {
     setColorAnchorEl(event.currentTarget);
@@ -40,7 +24,6 @@ export const Note = ({ data, handleNoteClick, closePopup, expandedNote, handleAc
     switch (action) {
       case "color":
         setIsHovered(false)
-        setNote((prev)=>({...prev,color:newData}))
         await updateNote(data._id, {color:newData});
         handleAction(action, [data._id, newData])
         break;
@@ -66,31 +49,26 @@ export const Note = ({ data, handleNoteClick, closePopup, expandedNote, handleAc
   const isColorPaletteOpen = Boolean(colorAnchorEl);
 
   return (
-    <Card className="note-card"  style={{backgroundColor: note.color?`#${note.color}` : `#${data.color}`}} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-    <CardContent  onClick={handleNoteClick&&(() => {handleNoteClick(data)})}>
-      {/* Title */}
+    <Card className="note-card"  style={{backgroundColor: `#${data.color}`}} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <CardContent  onClick={status.includes("noteClick") && (() => {handleAction("noteClick", data)})}>
+
       <TextField
         fullWidth
         multiline
-        value={note.title}
+        value={data.title}
         variant="outlined"
-        onChange={(e) => setNote((prevNote) => ({ ...prevNote, title: e.target.value }))}
         className="note-title"
-        style={{ pointerEvents: expandedNote?"auto":'none' }}
+        style={{ pointerEvents: 'none' }}
       />
   
-      {/* Description */}
       <TextField
         fullWidth
-        value={note.description}
+        value={data.description}
         variant="outlined"
         multiline
         rows={1}
         className="note-description"
-        inputRef={textAreaRef}
-        onInput={handleResize}
-        onChange={(e) => setNote((prevNote) => ({ ...prevNote, description: e.target.value }))}
-        style={{ pointerEvents: expandedNote?"auto":'none' }}
+        style={{ pointerEvents: 'none' }}
       />
     </CardContent>
   
@@ -153,14 +131,7 @@ export const Note = ({ data, handleNoteClick, closePopup, expandedNote, handleAc
           <MoreVertOutlined className="custom-icon" />
         </IconButton>}
 
-        {closePopup&&<IconButton
-                aria-label="close"
-                onClick={() => {
-                  closePopup(data._id,note)
-                }}>
-                <Close />
-        </IconButton>}
-      </CardActions>
+      </CardActions>  
     )}
   </Card>
   );

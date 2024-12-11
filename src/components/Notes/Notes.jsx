@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import { Note } from "../Note/Note";
-import { fetchNotes, updateNote} from "../../utils/Api";
+import { fetchNotes } from "../../utils/Api";
 import TakeNote from "../TakeNote/TakeNote";
 import './Notes.scss'
 import { NoNote } from "../NoNote/NoNote";
@@ -11,12 +11,11 @@ export const Notes=()=>{
   const [expandedNote, setExpandedNote] = useState(null);
   const [notes, setNotes] = useState([]);
   const searchQuery=useContext(SearchQueryContext)
-  const status = ["archive", "trash", "alert", "personAdd", "imageAdd", "colorPalette", "moreVert"];
+  const status = ["archive", "trash", "alert", "personAdd", "imageAdd", "colorPalette", "moreVert", "noteClick"];
 
   useEffect(() => {
     (async () => {
       const userData = await fetchNotes();
-      console.log(searchQuery, "ssdsd");
       if (userData && userData.data && searchQuery === "") {
         setNotes(userData.data.data);
       } else if (userData && userData.data) {
@@ -30,77 +29,90 @@ export const Notes=()=>{
     })();
   }, [searchQuery]);
 
-  const handleNoteClick = (data) => {
-    setExpandedNote(data);
-  };
-
-
   const handleAction=async(action, actionData)=>{
     switch(action){
-      case "add" :
-        setNotes((prevNotes) => [...prevNotes, actionData]);
-      case "color" :
-        setNotes((prevNotes) => {
-          return prevNotes.map((note) => 
-            { return note._id == actionData[0] ? { ...note, color: actionData[1] } : note}
-          );
-        });
+      case "add" : setNotes((prevNotes) => [...prevNotes, actionData]);
+                   break
+      case "color" : setNotes((prevNotes) => {
+                        return prevNotes.map((note) => 
+                          { return note._id == actionData[0] ? { ...note, color: actionData[1] } : note}
+                        );
+                      });
+                      break
       case "archive":
-      case "trash":
-        setNotes((prevNotes) => {
-          return prevNotes.filter((note) => note._id != actionData)
-        });
+      case "trash": setNotes((prevNotes) => {
+                      return prevNotes.filter((note) => note._id != actionData)
+                    });
+                    break;
+      case "editNote" : setNotes((prevNotes) => {
+                        return prevNotes.map((note) => {
+                          if (note._id === actionData.editNote._id) 
+                            return { ...note, ...actionData.note };
+                          else 
+                            return note; 
+                        });
+                      });
+                      setExpandedNote(null);  
+                      break
+      case "deleteEditNote" :               
+      case "archiveEditNote": setNotes((prevNotes) => {
+                                return prevNotes.filter((note) => note._id != actionData)
+                              });
+                              setExpandedNote(null);
+                              break;
+      case "noteClick" : setExpandedNote(actionData);
     }
   }
 
-  const closePopup = async(id, updatedNote) => {
-    await updateNote(id, updatedNote)
-    setNotes((prevNotes) => {
-      return prevNotes.map((note) => {
-        if (note._id === id) 
-          return { ...note, ...updatedNote };
-        else 
-          return note; 
-      });
-    });
-    setExpandedNote(null);
-  };
-
  return (
-  <>
-    {expandedNote ? (
-      <div className="popup-overlay">
-        <Note
-          key={expandedNote._id}
-          data={expandedNote}
-          closePopup={closePopup}
-          handleNoteClick={handleNoteClick}
-          handleAction={handleAction}
-          expandedNote={expandedNote}
-          status={status}
-        />
-      </div>
-    ) : (
-      <>
-        <span className="centered-span">
-          <TakeNote handleAction={handleAction} />
-        </span>
-        {notes.length ? (
-          notes.map((note, index) => (
-            <Note
-              key={note._id || index}
-              data={note}
-              expandedNote={expandedNote}
-              handleNoteClick={handleNoteClick}
+    <>
+      {expandedNote ? (
+        <>
+          <div className="popup-overlay">
+            <TakeNote
+              key={expandedNote._id}
               handleAction={handleAction}
-              status={status}
+              editNote={expandedNote}
             />
-          ))
+          </div>
+          <span className="centered-span">
+            <TakeNote handleAction={handleAction} />
+          </span>
+          {notes.length ? (
+            notes.map((note, index) => (
+              <Note
+                key={note._id || index}
+                data={note}
+                handleAction={handleAction}
+                status={status}
+              />
+            ))
+          ) : (
+            <NoNote />
+          )}
+        </>
+    
         ) : (
-          <NoNote />
-        )}
-      </>
-    )}
-  </>
-);
+          
+        <>
+          <span className="centered-span">
+            <TakeNote handleAction={handleAction} />
+          </span>
+          {notes.length ? (
+            notes.map((note, index) => (
+              <Note
+                key={note._id || index}
+                data={note}
+                expandedNote={expandedNote}
+                handleAction={handleAction}
+                status={status}
+              />
+            ))
+          ) : (
+            <NoNote />
+          )}
+        </>
+      )}
+    </>
+  );
 }

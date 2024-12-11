@@ -3,75 +3,74 @@ import { IconButton, Popover, TextField, Button } from "@mui/material";
 import { BrushOutlined, CheckBoxOutlined, InsertPhotoOutlined, AddAlertOutlined, PaletteOutlined, PersonAddAlt1Outlined, MoreVertOutlined, ArchiveOutlined, UndoOutlined, RedoOutlined } from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
 import ColorPalette from "../ColorPalette/ColorPalette";
-import { archive, createNote } from "../../utils/Api";
+import { archive, createNote, deleteForever, updateNote } from "../../utils/Api";
 
-export default function TakeNote({ handleAction }) {
-  const [takeNoteState, setTakeNoteState] = useState(false);
-  const [note, setNote] = useState({ title: "", description: "" , color: ""});
+export default function TakeNote({ handleAction, editNote,}) {
+  const [takeNoteState, setTakeNoteState] = useState(editNote?true:false);
+  const [note, setNote] = useState(editNote?{ title: editNote.title, description: editNote.description , color: editNote.color}:{ title: "", description: "" , color: ""});
   const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [colorAnchorEl, setColorAnchorEl] = useState(null);
   const noteRef = useRef(null);
-  
-  const handleAdd = async() => {
+
+  const handleTakeNoteAction = async(action) => {
     if (note.title || note.description) {
-      let createNoteResponse = await createNote(note)
-      handleAction("add", createNoteResponse.data.data);
+      const createNoteResponse = await createNote(note)
+      switch(action){
+        case "add" :  handleAction("add", createNoteResponse.data.data);
+                      break
+        case "archive" : await archive(createNoteResponse.data.data._id);
+                         break
+      }
       setNote({ title: "", description: "", color:"" });
       setTakeNoteState(false);
     }
-  };
+  }
 
-  const handleArchive = async() => {
+  const handleEditNote =async(action, note)=>{
     if (note.title || note.description) {
-      let createNoteResponse = await createNote(note)
-      await archive(createNoteResponse.data.data._id);
-      setNote({ title: "", description: "", color:"" });
-      setTakeNoteState(false);
+      switch(action){
+        case "update" : await updateNote(editNote._id, note);
+                        setTakeNoteState(false);
+                        handleAction("editNote", {editNote, note})
+                        break
+        case "archive" : await updateNote(editNote._id, note);
+                        await archive(editNote._id);
+                        setTakeNoteState(false);
+                        handleAction("archiveEditNote", editNote._id)
+                        break
+
+      }  
     }
-  };
-
-  const handleTitleFocus = () => {
-    setTakeNoteState(true);
-    setIsTitleFocused(true);
-  };
-
-  const handleTitleBlur = () => {
-    setIsTitleFocused(false);
-  };
-
-  const handleDescriptionFocus = () => {
-    setIsDescriptionFocused(true);
-  };
-
-  const handleDescriptionBlur = () => {
-    setIsDescriptionFocused(false);
-  };
+    else {
+      await deleteForever(editNote._id)
+      setTakeNoteState(false);
+      handleAction("deleteEditNote", editNote._id)
+    }
+  }
 
   let handlePalatteColor=(action, newColor)=>{
     setNote((prev)=>({...prev,color:newColor}))
   }
   
-
-  const handleColorClick = (event) => {
-    setColorAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseColorPalette = () => {
+  const handleCloseColorPalette = () => 
     setColorAnchorEl(null);
-  };
+  
 
   const isColorPaletteOpen = Boolean(colorAnchorEl);
 
   useEffect(() => { 
     const handleClickOutside = (event) => {
       if (noteRef.current && !noteRef.current.contains(event.target)) {
-        handleAdd();
-        setNote({ title: "", description: "", color: "" });
-        setTakeNoteState(false);
+        if(editNote)
+          handleEditNote("update", note)
+        else{
+          handleTakeNoteAction("add");
+          setNote({ title: "", description: "", color: "" });
+          setTakeNoteState(false);
+        }
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
@@ -98,10 +97,10 @@ export default function TakeNote({ handleAction }) {
     >
       <TextField
         placeholder={takeNoteState ? "Title" : "Take a note"}
-        onFocus={handleTitleFocus}
+        onFocus={()=>{setTakeNoteState(true); setIsTitleFocused(true)}}
         value={note.title}
         onChange={(e) => setNote({ ...note, title: e.target.value })}
-        onBlur={handleTitleBlur}
+        onBlur={()=> setIsTitleFocused(false)}
         fullWidth
         multiline
         sx={{
@@ -143,8 +142,8 @@ export default function TakeNote({ handleAction }) {
             placeholder="Description"
             value={note.description}
             onChange={(e) => setNote({ ...note, description: e.target.value })}
-            onFocus={handleDescriptionFocus}
-            onBlur={handleDescriptionBlur}
+            onFocus={ ()=>setIsDescriptionFocused(true) }
+            onBlur={ ()=>setIsDescriptionFocused(false) }
             multiline
             minRows={3}
             fullWidth
@@ -169,7 +168,8 @@ export default function TakeNote({ handleAction }) {
                 justifyContent: "space-evenly",
                 marginTop: "18px",
                 gap:"15px"
-              }}>
+              }}
+            >
               <IconButton>
                 <AddAlertOutlined className="icon-button" />
               </IconButton>
@@ -178,8 +178,7 @@ export default function TakeNote({ handleAction }) {
                 <PersonAddAlt1Outlined className="icon-button" />
               </IconButton>
 
-              {/* <> */}
-              <IconButton onClick={handleColorClick}>
+              <IconButton onClick={ (event)=> setColorAnchorEl(event.currentTarget) }>
                 <PaletteOutlined className="icon-button"/>
               </IconButton>
               <Popover
@@ -199,14 +198,13 @@ export default function TakeNote({ handleAction }) {
               >
                 <ColorPalette actionClick={handlePalatteColor} handleCloseColorPalette={handleCloseColorPalette} />
               </Popover>
-            {/* </> */}
 
               <IconButton>
                 <InsertPhotoOutlined className="icon-button" />
               </IconButton>
 
               <IconButton aria-label="archive">
-                <ArchiveOutlined onClick={handleArchive} className="icon-button"/>
+                <ArchiveOutlined onClick={()=>editNote?handleEditNote("archive", note):handleTakeNoteAction("archive")} className="icon-button"/>
               </IconButton>
 
               <IconButton>
@@ -224,7 +222,7 @@ export default function TakeNote({ handleAction }) {
                 variant="outlined" 
                 color="primary" 
                 disabled={(note.title||note.description)?false:true}      
-                onClick={handleAdd}
+                onClick={()=>editNote?handleEditNote("update", note):handleTakeNoteAction("add")}
                 style={{fontSize:"medium", borderRadius:"1em", color:(note.title||note.description)&&"rgba(0, 0, 0, 0.59)", border:"none"}}
               >
               Add
@@ -237,26 +235,19 @@ export default function TakeNote({ handleAction }) {
                 justifyContent: "space-evenly",
                 marginTop: "18px",
                 gap:"11px"
-              }}>
-              {/* <IconButton
-                // aria-label="close"
-                
-                }}> */}
-                {/* <Close /> */}
-              {/* </IconButton> */}
-
+              }}
+            >
               <Button
                 variant="outlined" 
                 color="primary"
                 onClick={() => {
-                handleAdd();
+                editNote?handleEditNote("update", note):handleTakeNoteAction("add");
                 setTakeNoteState(false);
                 setNote({ title: "", description: "", color:"" });}}
                 style={{fontSize:"medium", borderRadius:"1em", color:"rgba(0, 0, 0, 0.59)", border:"none",textTransform: "none"}}
               >
                 Close
               </Button> 
-
             </span>
           </span>
         </>
